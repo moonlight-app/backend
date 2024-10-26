@@ -6,6 +6,7 @@ out/
 *.jar
 *.iml
 .DS_Store
+test.mv.db
 
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
