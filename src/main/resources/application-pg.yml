@@ -1,0 +1,60 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://127.0.0.1/${PG_DATABASE}
+    username: ${PG_USERNAME}
+    password: ${PG_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    open-in-view: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: moonlight.mail.agent
+    password: ${GMAIL_APP_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.ssl.trust: smtp.gmail.com
+    test-connection: true
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 4MB
+
+  sql:
+    init:
+      mode: always
+
+logging:
+  level:
+    root: INFO
+    '[org.springframework.security]': DEBUG
+    '[org.springframework.web]': DEBUG
+  pattern:
+    console: '%clr([){faint}%clr(%d{dd.MM.yy}){faint} %clr(%d{HH:mm:ss}){magenta}%clr(]){faint} %clr(%5p) %clr(:){faint} %clr(%-40.40logger{0}){cyan} %clr(:){faint} %m%n%wEx'
+
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: lax
+
+  cors:
+    allowed-origin: "http://localhost:8080"
+
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+  host: http://localhost:8080
+
+  mail:
+    name: 'Moonlight App'
+    address: moonlight.mail.agent@gmail.com
