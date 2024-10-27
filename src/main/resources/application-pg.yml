@@ -15,7 +15,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: moonlight.mail.agent
-    password: ${GMAIL_APP_PASSWORD}
+    password: '${GMAIL_APP_PASSWORD}'
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -40,13 +40,14 @@ logging:
     console: '%clr([){faint}%clr(%d{dd.MM.yy}){faint} %clr(%d{HH:mm:ss}){magenta}%clr(]){faint} %clr(%5p) %clr(:){faint} %clr(%-40.40logger{0}){cyan} %clr(:){faint} %m%n%wEx'
 
 server:
-  servlet:
-    session:
-      cookie:
-        same-site: lax
-
   cors:
-    allowed-origin: "http://localhost:8080"
+    allowed-origin: 'http://localhost:8080'
+
+  jwt:
+    secret: '${JWT_SECRET}'
+    lifetime:
+      access-token: 43200     # 12 hours -> seconds
+      refresh-token: 2592000  # 30 days -> seconds
 
   error:
     whitelabel:
@@ -58,3 +59,9 @@ server:
   mail:
     name: 'Moonlight App'
     address: moonlight.mail.agent@gmail.com
+
+  servlet:
+    session:
+      cookie:
+        name: 'mlsession'
+        same-site: lax
