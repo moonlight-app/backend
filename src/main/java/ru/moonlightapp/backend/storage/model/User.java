@@ -25,7 +25,7 @@ public final class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "name", length = 64)
+    @Column(name = "name", nullable = false, length = 64)
     private String name;
 
     @Column(name = "birth_date")
@@ -36,13 +36,15 @@ public final class User implements UserDetails {
     private Sex sex;
 
     @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
-    public User(String email, String password) {
-        this(email, password, null, null, null);
+    public User(String email, String password, String name) {
+        this(email, password, name, null, null);
     }
 
     public User(String email, String password, String name, LocalDate birthDate, Sex sex) {
@@ -114,26 +116,6 @@ public final class User implements UserDetails {
     @Override
     public String getUsername() {
         return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
 }

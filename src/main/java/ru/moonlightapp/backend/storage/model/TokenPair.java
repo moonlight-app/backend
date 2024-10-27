@@ -24,13 +24,23 @@ public final class TokenPair {
     private String accessToken;
 
     @Column(name = "access_token_expires_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant accessTokenExpiresAt;
 
     @Column(name = "refresh_token", nullable = false, unique = true)
     private String refreshToken;
 
     @Column(name = "refresh_token_expires_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant refreshTokenExpiresAt;
+
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant updatedAt;
 
     public TokenPair(String userEmail, String accessToken, Instant accessTokenExpiresIn, String refreshToken, Instant refreshTokenExpiresIn) {
         this.userEmail = userEmail;
@@ -38,6 +48,8 @@ public final class TokenPair {
         this.accessTokenExpiresAt = accessTokenExpiresIn;
         this.refreshToken = refreshToken;
         this.refreshTokenExpiresAt = refreshTokenExpiresIn;
+        this.createdAt = Instant.now();
+        this.updatedAt = createdAt;
     }
 
     public boolean isAccessTokenExpired() {
@@ -55,6 +67,7 @@ public final class TokenPair {
     public void updateAccessToken(String token, Instant expiresAt) {
         this.accessToken = token;
         this.accessTokenExpiresAt = expiresAt;
+        onDataUpdated();
     }
 
     public void updateRefreshToken(BiFunction<String, Instant, String> tokenGenerator, Instant expiresAt) {
@@ -64,6 +77,11 @@ public final class TokenPair {
     public void updateRefreshToken(String token, Instant expiresAt) {
         this.refreshToken = token;
         this.refreshTokenExpiresAt = expiresAt;
+        onDataUpdated();
+    }
+
+    private void onDataUpdated() {
+        this.updatedAt = Instant.now();
     }
 
     @Override
@@ -89,6 +107,8 @@ public final class TokenPair {
                 ", accessTokenExpiresAt=" + accessTokenExpiresAt +
                 ", refreshToken='" + (refreshToken != null ? "<masked>" : "<not set>") + '\'' +
                 ", refreshTokenExpiresAt=" + refreshTokenExpiresAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 

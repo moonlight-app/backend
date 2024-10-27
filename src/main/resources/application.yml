@@ -63,3 +63,13 @@ server:
       cookie:
         name: 'mlsession'
         same-site: lax
+
+springdoc:
+  api-docs:
+    path: '/docs/openapi'
+    version: openapi_3_1
+  default-produces-media-type: 'application/json'
+  enable-spring-security: false
+  swagger-ui:
+    operations-sorter: alpha
+    use-root-path: true

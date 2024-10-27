@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Moonlight - Подтверждение</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+        h1, h6, p {
+            color: rgba(0, 0, 0, 50%);
+            font-family: "Golos Text", sans-serif;
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #0786B5;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 32px 0;
+        }
+
+        h6 {
+            color: black;
+            font-weight: 500;
+        }
+
+        .logo .title {
+            color: #0786B5;
+            font-family: "Golos Text", sans-serif !important;
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+        }
+
+        a,
+        a[href] {
+            color: black !important;
+            font-family: "Golos Text", sans-serif;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body style="padding:0;margin:0">
+<table role="presentation" style="width:100%">
+    <thead>
+    <tr>
+        <td style="padding:16px 32px;margin:0;background:rgba(0,102,254,3%);border-radius: 24px 24px 0 0">
+            <a class="logo" style="text-decoration:none">
+                <table>
+                    <tr>
+                        <td style="padding:0;margin:0">
+                            <img src="https://moonlight-app.ru/static/image/logo.png" style="width:60px;height:60px" alt="logo"/>
+                        </td>
+                        <td style="padding-left:12px;margin:0">
+                            <p class="title" style="padding:0;margin:0">Moonlight</p>
+                        </td>
+                    </tr>
+                </table>
+            </a>
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="padding:32px;margin:0">
+            <table>
+                <tr>
+                    <td style="padding:0;margin:0">
+                        <h6>Здравствуйте, {{user}}!</h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:0;margin:0">
+                        <p>{{subtitle}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:0;margin:32px 0">
+                        <h1>{{code}}</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:0;margin:0">
+                        <h6>Вы ничего не запрашивали?</h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding:0;margin:0">
+                        <p>Можете проигнорировать данное письмо, если подтверждение этой операции было запрошено не Вами.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td style="padding:16px 32px;margin:0;background:rgba(0,102,254,3%);border-radius: 0 0 24px 24px">
+            <table>
+                <tr>
+                    <td style="padding:0;margin:0">
+                        <a href="https://legal.easyx.ru/easylauncher/eula">Пользовательское соглашение</a>
+                    </td>
+                    <td style="padding-left:12px;margin:0">
+                        <a href="https://legal.easyx.ru/general/privacy">Политика конфиденциальности</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+</body>
+</html>
