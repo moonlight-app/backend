@@ -57,24 +57,44 @@ public final class User implements UserDetails {
         this.updatedAt = createdAt;
     }
 
-    public void changeName(String name) {
+    public boolean changeName(String name) {
+        Objects.requireNonNull(name);
+
+        if (Objects.equals(name, this.name))
+            return false;
+
         this.name = name;
         onDataUpdated();
+        return true;
     }
 
-    public void changePassword(String encodedPassword) {
+    public boolean changePassword(String encodedPassword) {
+        Objects.requireNonNull(encodedPassword);
+
+        if (Objects.equals(encodedPassword, this.password))
+            return false;
+
         this.password = encodedPassword;
         onDataUpdated();
+        return true;
     }
 
-    public void changeBirthDate(LocalDate birthDate) {
+    public boolean changeBirthDate(LocalDate birthDate) {
+        if (Objects.equals(birthDate, this.birthDate))
+            return false;
+
         this.birthDate = birthDate;
         onDataUpdated();
+        return true;
     }
 
-    public void changeSex(Sex sex) {
+    public boolean changeSex(Sex sex) {
+        if (Objects.equals(sex, this.sex))
+            return false;
+
         this.sex = sex;
         onDataUpdated();
+        return true;
     }
 
     private void onDataUpdated() {
