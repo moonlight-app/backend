@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Inherited
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GenericErrorResponse {
+public @interface BadRequestResponse {
 
     String[] value();
 

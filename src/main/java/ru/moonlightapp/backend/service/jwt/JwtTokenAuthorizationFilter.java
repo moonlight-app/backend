@@ -20,6 +20,8 @@ import ru.moonlightapp.backend.web.MoonlightAuthenticationDetailsSource;
 import java.io.IOException;
 import java.util.Optional;
 
+import static ru.moonlightapp.backend.service.JwtTokenService.tryFetchBearerToken;
+
 @RequiredArgsConstructor
 public class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
 
@@ -61,13 +63,6 @@ public class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private Optional<String> tryFetchBearerToken(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        return authorization != null && authorization.startsWith("Bearer ")
-                ? Optional.of(authorization.substring(7))
-                : Optional.empty();
     }
 
 }

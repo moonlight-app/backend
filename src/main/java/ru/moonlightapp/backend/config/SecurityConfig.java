@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/error", "/static/**", "/favicon.ico").permitAll()
                         .requestMatchers("/swagger-ui/**", "/docs/openapi").permitAll()
+                        .requestMatchers("/auth/token/**").authenticated()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())

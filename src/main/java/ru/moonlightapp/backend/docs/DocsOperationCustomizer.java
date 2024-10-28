@@ -15,7 +15,8 @@ import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.method.HandlerMethod;
-import ru.moonlightapp.backend.docs.annotation.GenericErrorResponse;
+import ru.moonlightapp.backend.docs.annotation.BadRequestResponse;
+import ru.moonlightapp.backend.docs.annotation.ForbiddenResponse;
 import ru.moonlightapp.backend.docs.annotation.Note;
 import ru.moonlightapp.backend.docs.annotation.SuccessResponse;
 import ru.moonlightapp.backend.model.ErrorModel;
@@ -43,19 +44,33 @@ public final class DocsOperationCustomizer implements OperationCustomizer {
 
         boolean hasValidationError = Arrays.stream(method.getMethodParameters()).anyMatch(p -> p.hasParameterAnnotation(Valid.class));
 
-        GenericErrorResponse genericErrorResponse = method.getMethodAnnotation(GenericErrorResponse.class);
-        String[] genericErrorCodes = genericErrorResponse != null ? genericErrorResponse.value() : null;
-        boolean hasGenericError = genericErrorCodes != null && genericErrorCodes.length != 0;
+        BadRequestResponse badRequestResponse = method.getMethodAnnotation(BadRequestResponse.class);
+        String[] badRequestCodes = badRequestResponse != null ? badRequestResponse.value() : null;
+        boolean hasBadRequest = badRequestCodes != null && badRequestCodes.length != 0;
 
-        if (hasValidationError || hasGenericError)
-            addBadRequestResponse(operation, hasValidationError, hasGenericError);
+        if (hasValidationError || hasBadRequest)
+            addBadRequestResponse(operation, hasValidationError, hasBadRequest);
+
+        ForbiddenResponse forbiddenResponse = method.getMethodAnnotation(ForbiddenResponse.class);
+        String[] forbiddenCodes = forbiddenResponse != null ? forbiddenResponse.value() : null;
+        boolean hasForbidden = forbiddenCodes != null && forbiddenCodes.length != 0;
+
+        if (hasForbidden)
+            addForbiddenResponse(operation, hasForbidden);
 
         Note note = method.getMethodAnnotation(Note.class);
         if (note != null)
             notes.addAll(List.of(note.value()));
 
-        if (hasGenericError) {
-            List<String> codes = new ArrayList<>(Arrays.asList(genericErrorCodes));
+        if (hasBadRequest || hasForbidden) {
+            List<String> codes = new ArrayList<>();
+
+            if (badRequestCodes != null)
+                codes.addAll(Arrays.asList(badRequestCodes));
+
+            if (forbiddenCodes != null)
+                codes.addAll(Arrays.asList(forbiddenCodes));
+
             codes.sort(String::compareToIgnoreCase);
 
             Map<String, DescribedError> describes = DescribedError.findDescribes(method);
@@ -124,27 +139,42 @@ public final class DocsOperationCustomizer implements OperationCustomizer {
         }
     }
 
-    public void addBadRequestResponse(Operation operation, boolean hasValidationError, boolean hasGenericError) {
-        ApiResponse apiResponse = apiResponse(operation, "400", "Неверный запрос");
+    public void addBadRequestResponse(Operation operation, boolean hasValidationError, boolean hasCodeError) {
+        addApiResponse(operation, "400", "Неверный запрос", mediaType -> {
+            if (hasValidationError) {
+                mediaType.addExamples("Ошибка валидации", new Example().value(new FieldValidationErrorModel("...", "...")));
+            }
 
-        Content content = apiResponse.getContent();
-        if (content == null) {
-            content = new Content();
-            apiResponse.setContent(content);
-        }
+            if (hasCodeError) {
+                mediaType.addExamples("Ошибка с кодом", new Example().value(new ErrorModel("<код ошибки>", "...")));
+            }
+        });
+    }
 
-        MediaType mediaType = content.get("application/json");
-        if (mediaType == null) {
-            mediaType = new MediaType();
-            content.addMediaType("application/json", mediaType);
-        }
+    public void addForbiddenResponse(Operation operation, boolean hasCodeError) {
+        addApiResponse(operation, "403", "Доступ запрещен", mediaType -> {
+            if (hasCodeError) {
+                mediaType.addExamples("Ошибка с кодом", new Example().value(new ErrorModel("<код ошибки>", "...")));
+            }
+        });
+    }
 
-        if (hasValidationError) {
-            mediaType.addExamples("Ошибка валидации", new Example().value(new FieldValidationErrorModel("...", "...")));
-        }
+    public void addApiResponse(Operation operation, String httpCode, String description, Consumer<MediaType> mediaTypeConsumer) {
+        ApiResponse apiResponse = apiResponse(operation, httpCode, description);
+        if (mediaTypeConsumer != null) {
+            Content content = apiResponse.getContent();
+            if (content == null) {
+                content = new Content();
+                apiResponse.setContent(content);
+            }
 
-        if (hasGenericError) {
-            mediaType.addExamples("Ошибка с кодом", new Example().value(new ErrorModel("<код ошибки>", "...")));
+            MediaType mediaType = content.get("application/json");
+            if (mediaType == null) {
+                mediaType = new MediaType();
+                content.addMediaType("application/json", mediaType);
+            }
+
+            mediaTypeConsumer.accept(mediaType);
         }
     }
 

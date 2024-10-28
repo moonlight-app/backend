@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.MacAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.TokenPair;
 import ru.moonlightapp.backend.storage.repository.TokenPairRepository;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
+import ru.moonlightapp.backend.util.CharSequenceGenerator;
 
 import javax.crypto.SecretKey;
 import java.time.Instant;
@@ -76,14 +78,14 @@ public final class JwtTokenService {
 
                 Instant expiration = payload.getExpiration().toInstant();
                 if (expiration.isBefore(Instant.now()))
-                    throw new ApiException(HttpStatus.UNAUTHORIZED, "token_is_expired", "Your access token is expired!");
+                    throw new ApiException(HttpStatus.FORBIDDEN, "token_is_expired", "Your access token is expired!");
 
                 String userEmail = payload.getSubject();
                 if (userEmail != null && !userEmail.isEmpty()) {
                     TokenPair foundPair = tokenPairRepository.getByAccessTokenAndUserEmail(accessToken, userEmail);
                     if (foundPair != null) {
                         if (foundPair.isAccessTokenExpired()) {
-                            throw new ApiException(HttpStatus.UNAUTHORIZED, "token_is_expired", "Your access token is expired!");
+                            throw new ApiException(HttpStatus.FORBIDDEN, "token_is_expired", "Your access token is expired!");
                         } else {
                             return;
                         }
@@ -121,18 +123,19 @@ public final class JwtTokenService {
     }
 
     private String generateJwtAccessToken(String username, Instant expiration) {
-        return generateJwtToken(username, expiration, Jwts.SIG.HS256);
+        return generateJwtToken(username, expiration, Jwts.SIG.HS256, 16);
     }
 
     private String generateJwtRefreshToken(String username, Instant expiration) {
-        return generateJwtToken(username, expiration, Jwts.SIG.HS512);
+        return generateJwtToken(username, expiration, Jwts.SIG.HS512, 128);
     }
 
-    private String generateJwtToken(String username, Instant expiration, MacAlgorithm algorithm) {
+    private String generateJwtToken(String username, Instant expiration, MacAlgorithm algorithm, int saltLength) {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(expiration))
+                .claim("slt", CharSequenceGenerator.generateRandomAlphabeticCode(saltLength, true))
                 .signWith(key(), algorithm)
                 .compact();
     }
@@ -147,6 +150,13 @@ public final class JwtTokenService {
 
     private SecretKey key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
+    public static Optional<String> tryFetchBearerToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        return authorization != null && authorization.startsWith("Bearer ")
+                ? Optional.of(authorization.substring(7))
+                : Optional.empty();
     }
 
 }
