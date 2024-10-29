@@ -2,7 +2,7 @@ package ru.moonlightapp.backend.api.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ru.moonlightapp.backend.model.Sex;
+import ru.moonlightapp.backend.model.attribute.Sex;
 import ru.moonlightapp.backend.storage.model.User;
 
 import java.time.LocalDate;

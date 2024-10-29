@@ -1,4 +1,4 @@
-package ru.moonlightapp.backend.model;
+package ru.moonlightapp.backend.model.attribute;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;

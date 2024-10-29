@@ -2,7 +2,7 @@ package ru.moonlightapp.backend.storage.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import ru.moonlightapp.backend.model.Sex;
+import ru.moonlightapp.backend.model.attribute.Sex;
 
 @Converter(autoApply = true)
 public class SexConverter implements AttributeConverter<Sex, String> {

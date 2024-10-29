@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.exception.GenericErrorException;
-import ru.moonlightapp.backend.model.Sex;
+import ru.moonlightapp.backend.model.attribute.Sex;
 import ru.moonlightapp.backend.storage.model.User;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
 

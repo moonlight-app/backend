@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.moonlightapp.backend.model.Sex;
+import ru.moonlightapp.backend.model.attribute.Sex;
 
 import java.time.Instant;
 import java.time.LocalDate;
