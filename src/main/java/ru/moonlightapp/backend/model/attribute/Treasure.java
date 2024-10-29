@@ -3,6 +3,9 @@ package ru.moonlightapp.backend.model.attribute;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ru.moonlightapp.backend.util.KeyedEnumConstantFinder;
+
+import java.util.Optional;
 
 @Getter
 @AllArgsConstructor
@@ -21,20 +24,8 @@ public enum Treasure implements KeyedEnum {
     @JsonValue
     private final String key;
 
-    public static final class TreasureArrayConverter extends KeyedEnumArrayConverterBase<Treasure> {
-
-        @Override
-        protected Treasure parse(String string) {
-            
-
-            return null;
-        }
-
-        @Override
-        protected Treasure[] createArray(int size) {
-            return new Treasure[0];
-        }
-
+    public static Optional<Treasure> findByKey(String key) {
+        return KeyedEnumConstantFinder.findByKey(key, values());
     }
 
 }

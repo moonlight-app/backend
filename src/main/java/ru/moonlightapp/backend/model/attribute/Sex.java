@@ -3,12 +3,13 @@ package ru.moonlightapp.backend.model.attribute;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import ru.moonlightapp.backend.util.KeyedEnumConstantFinder;
 
 import java.util.Optional;
 
 @Getter
 @AllArgsConstructor
-public enum Sex {
+public enum Sex implements KeyedEnum {
 
     FEMALE  ("female"),
     MALE    ("male"),
@@ -18,12 +19,7 @@ public enum Sex {
     private final String key;
 
     public static Optional<Sex> findByKey(String key) {
-        if (key != null && !key.isEmpty())
-            for (Sex value : values())
-                if (key.equalsIgnoreCase(value.getKey()))
-                    return Optional.of(value);
-
-        return Optional.empty();
+        return KeyedEnumConstantFinder.findByKey(key, values());
     }
 
 }

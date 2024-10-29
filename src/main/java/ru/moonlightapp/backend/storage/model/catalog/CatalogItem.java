@@ -3,10 +3,7 @@ package ru.moonlightapp.backend.storage.model.catalog;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.moonlightapp.backend.model.attribute.Audience;
-import ru.moonlightapp.backend.model.attribute.Material;
 import ru.moonlightapp.backend.model.attribute.ProductType;
-import ru.moonlightapp.backend.model.attribute.Treasure;
 
 @Getter
 @NoArgsConstructor
@@ -26,20 +23,38 @@ public final class CatalogItem {
     @Column(name = "price", nullable = false)
     private float price;
 
-    @Column()
+    @Column(name = "type", nullable = false)
     private ProductType type;
 
-    private float[] size;
+    @Column(name = "sizes")
+    private String sizes;
 
-    private Material[] materials;
+    @Column(name = "materials")
+    private String materials;
 
-    private Audience[] audiences;
+    @Column(name = "audiences")
+    private String audiences;
 
     @Column(name = "treasures")
-    @Convert(converter = )
-    private Treasure[] treasures;
+    private String treasures;
 
     @Column(name = "preview_url")
     private String previewUrl;
+
+    @Override
+    public String toString() {
+        return "CatalogItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                ", type=" + type +
+                ", sizes='" + sizes + '\'' +
+                ", materials='" + materials + '\'' +
+                ", audiences='" + audiences + '\'' +
+                ", treasures='" + treasures + '\'' +
+                ", previewUrl='" + previewUrl + '\'' +
+                '}';
+    }
 
 }

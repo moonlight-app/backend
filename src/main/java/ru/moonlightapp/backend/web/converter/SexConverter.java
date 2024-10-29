@@ -7,7 +7,7 @@ public final class SexConverter implements Converter<String, Sex> {
 
     @Override
     public Sex convert(String sex) {
-        return Sex.findByKey(sex).orElseThrow();
+        return Sex.findByKey(sex).orElse(null);
     }
 
 }
