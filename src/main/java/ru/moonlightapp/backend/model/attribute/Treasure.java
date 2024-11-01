@@ -11,18 +11,19 @@ import java.util.Optional;
 @AllArgsConstructor
 public enum Treasure implements KeyedEnum {
 
-    NOTHING     ("nothing"),
-    DIAMOND     ("diamond"),
-    SAPPHIRE    ("sapphire"),
-    PEARL       ("pearl"),
-    AMETHYST    ("amethyst"),
-    FIANIT      ("fianit"),
-    EMERALD     ("emerald"),
-    RUBY        ("ruby"),
+    NOTHING     ("nothing",     1),
+    DIAMOND     ("diamond",     2),
+    SAPPHIRE    ("sapphire",    3),
+    PEARL       ("pearl",       4),
+    AMETHYST    ("amethyst",    5),
+    FIANIT      ("fianit",      6),
+    EMERALD     ("emerald",     7),
+    RUBY        ("ruby",        8),
     ;
 
     @JsonValue
     private final String key;
+    private final int moonlightId;
 
     public static Optional<Treasure> findByKey(String key) {
         return KeyedEnumConstantFinder.findByKey(key, values());

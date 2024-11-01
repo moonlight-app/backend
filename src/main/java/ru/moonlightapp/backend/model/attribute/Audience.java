@@ -11,14 +11,15 @@ import java.util.Optional;
 @AllArgsConstructor
 public enum Audience implements KeyedEnum {
 
-    MEN         ("men"),
-    WOMEN       ("women"),
-    CHILDREN    ("children"),
-    UNISEX      ("unisex"),
+    MEN         ("men",         1),
+    WOMEN       ("women",       2),
+    CHILDREN    ("children",    3),
+    UNISEX      ("unisex",      4),
     ;
 
     @JsonValue
     private final String key;
+    private final int moonlightId;
 
     public static Optional<Audience> findByKey(String key) {
         return KeyedEnumConstantFinder.findByKey(key, values());
