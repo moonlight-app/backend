@@ -19,7 +19,7 @@ public final class JewelProduct {
     @Column(name = "article", nullable = false, unique = true)
     private long article;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, length = 8)
     private ProductType type;
 
     @Column(name = "name", nullable = false, length = 0)
