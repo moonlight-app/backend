@@ -1,4 +1,8 @@
 spring:
+  data:
+    jdbc:
+      dialect: postgresql
+
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1/${PG_DATABASE}

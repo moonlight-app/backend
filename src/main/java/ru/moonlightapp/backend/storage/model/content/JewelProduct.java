@@ -12,12 +12,12 @@ import java.util.Objects;
 @Entity @Table(name = "jewel_products")
 public final class JewelProduct {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
     @Column(name = "article", nullable = false, unique = true)
-    private long article;
+    private int article;
 
     @Column(name = "type", nullable = false, length = 8)
     private ProductType type;
