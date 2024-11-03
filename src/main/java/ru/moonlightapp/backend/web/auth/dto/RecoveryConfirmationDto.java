@@ -12,7 +12,7 @@ public record RecoveryConfirmationDto(
         @EmailPattern
         String email,
         @NotBlank @Size(min = 6, max = 6)
-        @Pattern(regexp = "\\w{6}", message = "code: malformed")
+        @Pattern(regexp = "\\d{6}", message = "code: malformed")
         String code
 ) {
 

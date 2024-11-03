@@ -63,7 +63,7 @@ public final class EmailConfirmationService {
             }
         }
 
-        String code = CharSequenceGenerator.generateRandomAlphanumericString(6, false);
+        String code = CharSequenceGenerator.generateRandomDigitsCode(6);
 
         InputStream resource = getClass().getResourceAsStream("/templates/mail/confirmation.html");
         BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
