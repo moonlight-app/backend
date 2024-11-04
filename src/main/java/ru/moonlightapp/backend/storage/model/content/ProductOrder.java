@@ -23,7 +23,7 @@ public final class ProductOrder {
     private User owner;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private JewelProduct product;
+    private Product product;
 
     @Column(name = "size", length = 10)
     private String size;
@@ -42,7 +42,7 @@ public final class ProductOrder {
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
-    public ProductOrder(User owner, JewelProduct product, String size, int count) {
+    public ProductOrder(User owner, Product product, String size, int count) {
         this.owner = owner;
         this.product = product;
         this.size = size;
@@ -50,6 +50,15 @@ public final class ProductOrder {
         this.status = Status.IN_DELIVERY;
         this.createdAt = Instant.now();
         this.updatedAt = createdAt;
+    }
+
+    public void closeOrder() {
+        this.status = Status.CLOSED;
+        onDataUpdated();
+    }
+
+    private void onDataUpdated() {
+        this.updatedAt = Instant.now();
     }
 
     @Override

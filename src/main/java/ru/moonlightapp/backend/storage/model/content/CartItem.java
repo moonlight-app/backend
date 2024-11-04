@@ -21,7 +21,7 @@ public final class CartItem {
     private User owner;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private JewelProduct product;
+    private Product product;
 
     @Column(name = "size", length = 10)
     private String size;
@@ -37,7 +37,7 @@ public final class CartItem {
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
-    public CartItem(User owner, JewelProduct product, String size, int count) {
+    public CartItem(User owner, Product product, String size, int count) {
         this.owner = owner;
         this.product = product;
         this.size = size;

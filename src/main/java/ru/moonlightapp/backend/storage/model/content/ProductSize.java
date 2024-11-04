@@ -3,37 +3,34 @@ package ru.moonlightapp.backend.storage.model.content;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.moonlightapp.backend.model.attribute.ProductType;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
-@Entity @Table(name = "jewel_products")
-public final class CatalogItem {
+@Entity @Table(name = "product_sizes")
+public final class ProductSize {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "type", nullable = false, length = 8)
-    private ProductType type;
+    @Column(name = "size", nullable = false)
+    private float size;
 
-    @Column(name = "name", nullable = false, length = 0)
-    private String name;
+    @Column(name = "product_types", nullable = false)
+    private int productTypes;
 
-    @Column(name = "price", nullable = false)
-    private float price;
-
-    @Column(name = "preview_url", length = 0)
-    private String previewUrl;
+    @ManyToMany(mappedBy = "productSizes", fetch = FetchType.LAZY)
+    private Set<Product> products;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CatalogItem that = (CatalogItem) o;
+        ProductSize that = (ProductSize) o;
         return id == that.id;
     }
 
@@ -44,12 +41,10 @@ public final class CatalogItem {
 
     @Override
     public String toString() {
-        return "CatalogItem{" +
+        return "ProductSize{" +
                 "id=" + id +
-                ", type=" + type +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", previewUrl='" + previewUrl + '\'' +
+                ", size=" + size +
+                ", productTypes=" + productTypes +
                 '}';
     }
 

@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import ru.moonlightapp.backend.model.attribute.ProductType;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
-@Entity @Table(name = "jewel_products")
-public final class JewelProduct {
+@Entity @Table(name = "products")
+public final class Product {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -55,12 +56,20 @@ public final class JewelProduct {
     @Column(name = "description", length = 0)
     private String description;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "product_size_mappings",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_size_id")
+    )
+    private Set<ProductSize> productSizes;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JewelProduct that = (JewelProduct) o;
+        Product that = (Product) o;
         return article == that.article;
     }
 
@@ -71,7 +80,7 @@ public final class JewelProduct {
 
     @Override
     public String toString() {
-        return "JewelProduct{" +
+        return "Product{" +
                 "id=" + id +
                 ", article=" + article +
                 ", type=" + type +
