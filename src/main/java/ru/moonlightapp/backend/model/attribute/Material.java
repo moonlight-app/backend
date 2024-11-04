@@ -13,15 +13,15 @@ public enum Material implements KeyedEnum {
 
     GOLD        ("gold",        1),
     SILVER      ("silver",      2),
-    PLATINUM    ("platinum",    3),
-    WHITE_GOLD  ("white_gold",  4),
-    PINK_GOLD   ("pink_gold",   5),
-    CERAMICS    ("ceramics",    6),
+    PLATINUM    ("platinum",    4),
+    WHITE_GOLD  ("white_gold",  8),
+    PINK_GOLD   ("pink_gold",   16),
+    CERAMICS    ("ceramics",    32),
     ;
 
     @JsonValue
     private final String key;
-    private final int moonlightId;
+    private final int moonlightBit;
 
     public static Optional<Material> findByKey(String key) {
         return KeyedEnumConstantFinder.findByKey(key, values());

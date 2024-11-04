@@ -13,17 +13,17 @@ public enum Treasure implements KeyedEnum {
 
     NOTHING     ("nothing",     1),
     DIAMOND     ("diamond",     2),
-    SAPPHIRE    ("sapphire",    3),
-    PEARL       ("pearl",       4),
-    AMETHYST    ("amethyst",    5),
-    FIANIT      ("fianit",      6),
-    EMERALD     ("emerald",     7),
-    RUBY        ("ruby",        8),
+    SAPPHIRE    ("sapphire",    4),
+    PEARL       ("pearl",       8),
+    AMETHYST    ("amethyst",    16),
+    FIANIT      ("fianit",      32),
+    EMERALD     ("emerald",     64),
+    RUBY        ("ruby",        128),
     ;
 
     @JsonValue
     private final String key;
-    private final int moonlightId;
+    private final int moonlightBit;
 
     public static Optional<Treasure> findByKey(String key) {
         return KeyedEnumConstantFinder.findByKey(key, values());

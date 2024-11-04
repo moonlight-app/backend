@@ -31,11 +31,11 @@ public final class JewelProduct {
     @Column(name = "sizes", length = 0)
     private String sizes;
 
-    @Column(name = "audiences", length = 10)
-    private String audiences;
+    @Column(name = "audiences")
+    private int audiences;
 
-    @Column(name = "materials", length = 15)
-    private String materials;
+    @Column(name = "materials")
+    private int materials;
 
     @Column(name = "sample", length = 10)
     private String sample;
@@ -43,8 +43,8 @@ public final class JewelProduct {
     @Column(name = "sample_type", length = 30)
     private String sampleType;
 
-    @Column(name = "treasures", length = 15)
-    private String treasures;
+    @Column(name = "treasures")
+    private int treasures;
 
     @Column(name = "weight")
     private Float weight;
@@ -78,11 +78,11 @@ public final class JewelProduct {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", sizes='" + sizes + '\'' +
-                ", audiences='" + audiences + '\'' +
-                ", materials='" + materials + '\'' +
+                ", audiences=" + audiences +
+                ", materials=" + materials +
                 ", sample='" + sample + '\'' +
                 ", sampleType='" + sampleType + '\'' +
-                ", treasures='" + treasures + '\'' +
+                ", treasures=" + treasures +
                 ", weight=" + weight +
                 ", previewUrl='" + previewUrl + '\'' +
                 ", description='" + description + '\'' +
