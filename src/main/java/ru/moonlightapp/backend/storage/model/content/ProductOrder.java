@@ -1,10 +1,9 @@
 package ru.moonlightapp.backend.storage.model.content;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.moonlightapp.backend.model.OrderStatus;
 import ru.moonlightapp.backend.storage.model.User;
 
 import java.time.Instant;
@@ -32,7 +31,7 @@ public final class ProductOrder {
     private int count;
 
     @Column(name = "status", nullable = false)
-    private Status status;
+    private OrderStatus status;
 
     @Column(name = "created_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -47,13 +46,13 @@ public final class ProductOrder {
         this.product = product;
         this.size = size;
         this.count = count;
-        this.status = Status.IN_DELIVERY;
+        this.status = OrderStatus.IN_DELIVERY;
         this.createdAt = Instant.now();
         this.updatedAt = createdAt;
     }
 
     public void closeOrder() {
-        this.status = Status.CLOSED;
+        this.status = OrderStatus.CLOSED;
         onDataUpdated();
     }
 
@@ -87,19 +86,6 @@ public final class ProductOrder {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public enum Status {
-
-        IN_DELIVERY ("in_delivery"),
-        CLOSED      ("closed"),
-        ;
-
-        @JsonValue
-        private final String key;
-
     }
 
 }
