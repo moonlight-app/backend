@@ -38,6 +38,8 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
+    annotationProcessor("org.hibernate:hibernate-jpamodelgen:6.6.1.Final")
+
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
 

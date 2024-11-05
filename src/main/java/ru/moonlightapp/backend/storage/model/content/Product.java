@@ -33,9 +33,9 @@ public final class Product {
     private String sizes;
 
     @Column(name = "audiences")
-    private int audiences;
+    private Integer audiences;
 
-    @Column(name = "materials")
+    @Column(name = "materials", nullable = false)
     private int materials;
 
     @Column(name = "sample", length = 10)
@@ -44,13 +44,13 @@ public final class Product {
     @Column(name = "sample_type", length = 30)
     private String sampleType;
 
-    @Column(name = "treasures")
+    @Column(name = "treasures", nullable = false)
     private int treasures;
 
     @Column(name = "weight")
     private Float weight;
 
-    @Column(name = "preview_url", length = 0)
+    @Column(name = "preview_url", length = 0, nullable = false)
     private String previewUrl;
 
     @Column(name = "description", length = 0)
