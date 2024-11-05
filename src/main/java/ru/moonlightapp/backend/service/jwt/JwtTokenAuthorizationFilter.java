@@ -25,12 +25,19 @@ import static ru.moonlightapp.backend.service.JwtTokenService.tryFetchBearerToke
 @RequiredArgsConstructor
 public class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
 
+    private static final String TOKEN_REFRESH_ENDPOINT = "/auth/token/refresh";
+
     private final JwtTokenService jwtTokenService;
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (TOKEN_REFRESH_ENDPOINT.equals(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         Optional<String> foundAccessToken = tryFetchBearerToken(request);
         if (foundAccessToken.isPresent()) {
             String accessToken = foundAccessToken.get();
