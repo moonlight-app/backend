@@ -14,7 +14,7 @@ public record UserModel(
         @JsonProperty("sex") Sex sex
 ) {
 
-    public static UserModel fromUser(User user) {
+    public static UserModel from(User user) {
         return new UserModel(user.getEmail(), user.getName(), user.getBirthDate(), user.getSex());
     }
 

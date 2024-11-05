@@ -1,11 +1,14 @@
 package ru.moonlightapp.backend.web;
 
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.method.ParameterValidationResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.exception.GenericErrorException;
@@ -33,6 +36,19 @@ public final class MoonlightExceptionHandler extends ResponseEntityExceptionHand
         return ResponseEntity.badRequest()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(body);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        ParameterValidationResult validationResult = ex.getAllValidationResults().getFirst();
+
+        String parameterName = validationResult.getMethodParameter().getParameterName();
+        MessageSourceResolvable messageSource = validationResult.getResolvableErrors().getFirst();
+        String message = messageSource != null ? messageSource.getDefaultMessage() : "Parameter value is invalid!";
+
+        return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new FieldValidationErrorModel(parameterName, message));
     }
 
     @Override

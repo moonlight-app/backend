@@ -52,8 +52,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/error", "/static/**", "/favicon.ico").permitAll()
                         .requestMatchers("/swagger-ui/**", "/docs/openapi").permitAll()
-                        .requestMatchers("/auth/token/**").authenticated()
+                        .requestMatchers("/auth/token/validate").authenticated()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/catalog/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)

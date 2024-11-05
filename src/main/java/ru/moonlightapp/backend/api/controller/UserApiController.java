@@ -27,7 +27,7 @@ public class UserApiController extends ApiControllerBase {
     @Operation(summary = "Получение профиля", tags = "user-api")
     @GetMapping
     public UserModel getProfile() throws ApiException {
-        return UserModel.fromUser(getCurrentUser(userService));
+        return UserModel.from(getCurrentUser(userService));
     }
 
     @Operation(summary = "Изменение профиля", tags = "user-api")

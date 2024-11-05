@@ -8,7 +8,7 @@ import ru.moonlightapp.backend.storage.model.content.ProductSize;
 import ru.moonlightapp.backend.storage.model.content.ProductSize_;
 import ru.moonlightapp.backend.storage.model.content.Product_;
 
-import java.util.List;
+import java.util.Collection;
 
 public final class ProductSpecs {
 
@@ -32,7 +32,7 @@ public final class ProductSpecs {
         }
     }
 
-    public static Specification<Product> hasSizes(List<Float> sizes) {
+    public static Specification<Product> hasSizes(Collection<Float> sizes) {
         return (root, query, builder) -> {
             query.distinct(true);
             SetJoin<Product, ProductSize> productSizeJoin = root.join(Product_.productSizes, JoinType.INNER);
