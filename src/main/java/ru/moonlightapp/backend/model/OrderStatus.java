@@ -8,8 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum OrderStatus {
 
-    IN_DELIVERY("in_delivery"),
     CLOSED("closed"),
+    IN_DELIVERY("in_delivery"),
     ;
 
     @JsonValue
