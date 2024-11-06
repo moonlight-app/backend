@@ -4,7 +4,7 @@ import jakarta.persistence.Converter;
 import ru.moonlightapp.backend.model.attribute.Sex;
 
 @Converter(autoApply = true)
-public class SexConverter extends KeyedEnumConverterBase<Sex> {
+public final class SexConverter extends KeyedEnumConverterBase<Sex> {
 
     @Override
     protected Sex[] enumConstants() {
