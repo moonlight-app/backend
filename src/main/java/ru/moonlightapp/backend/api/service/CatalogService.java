@@ -10,6 +10,7 @@ import ru.moonlightapp.backend.api.dto.CatalogFiltersDto;
 import ru.moonlightapp.backend.api.model.CatalogItemModel;
 import ru.moonlightapp.backend.api.model.CategoryMetadataModel;
 import ru.moonlightapp.backend.api.model.FloatRangeModel;
+import ru.moonlightapp.backend.api.model.ProductModel;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.model.attribute.CatalogSorting;
 import ru.moonlightapp.backend.model.attribute.ProductType;
@@ -30,7 +31,7 @@ public final class CatalogService {
     private final ProductRepository productRepository;
     private final ProductSizeRepository productSizeRepository;
 
-    private final FavoritesService favoriteService;
+    private final FavoritesService favoritesService;
 
     public CategoryMetadataModel constructCategoryMetadata(ProductType productType) {
         float minPrice = productRepository.findMinPrice(productType);
@@ -57,11 +58,18 @@ public final class CatalogService {
 
         if (userEmail != null) {
             int[] pagedIds = page.get().mapToInt(Product::getId).toArray();
-            Set<Integer> favoriteIds = favoriteService.keepOnlyFavoriteIds(userEmail, pagedIds);
+            Set<Integer> favoriteIds = favoritesService.keepOnlyFavoriteIds(userEmail, pagedIds);
             return page.map(product -> CatalogItemModel.from(product, favoriteIds::contains));
         } else {
             return page.map(product -> CatalogItemModel.from(product, null));
         }
+    }
+
+    public ProductModel getProduct(int productId) throws ApiException {
+        return productRepository.findById(productId).map(ProductModel::from).orElseThrow(() -> new ApiException(
+                "product_not_found",
+                "A product with this ID isn't exist!"
+        ));
     }
 
     private static List<Specification<Product>> resolveActiveFilters(ProductType productType, CatalogFiltersDto filtersDto) throws ApiException {
