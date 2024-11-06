@@ -23,20 +23,20 @@ public class FavoritesApiController extends ApiControllerBase {
     private final FavoritesService favoriteItemService;
     private final UserService userService;
 
-    @Operation(summary = "Добавление товара в избранные", tags = "favorite-items-api")
+    @Operation(summary = "Добавление товара в избранные", tags = "favorites-api")
     @SuccessResponse("Товар добавлен в избранные")
     @BadRequestResponse({"product_not_found", "favorite_item_already_exists"})
     @DescribeError(code = "product_not_found", system = true, message = "Товар не существует")
     @DescribeError(code = "favorite_item_already_exists", message = "Товар уже в избранных")
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void addFavoriteItem(
+    public FavoriteItemModel addItem(
             @RequestParam(name = "product_id") @Min(1) int productId
     ) throws ApiException {
-        favoriteItemService.addItem(getCurrentUser(userService), productId);
+        return favoriteItemService.addItem(getCurrentUser(userService), productId);
     }
 
-    @Operation(summary = "Получение страницы избранных", tags = "favorite-items-api")
+    @Operation(summary = "Получение страницы избранных", tags = "favorites-api")
     @SuccessResponse(canBeEmpty = true)
     @GetMapping
     public ResponseEntity<Page<FavoriteItemModel>> getItems(
@@ -46,13 +46,13 @@ public class FavoritesApiController extends ApiControllerBase {
         return page.hasContent() ? ResponseEntity.ok(page) : ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Удаление товара из избранных", tags = "favorite-items-api")
+    @Operation(summary = "Удаление товара из избранных", tags = "favorites-api")
     @SuccessResponse("Товар удален из избранных")
     @BadRequestResponse({"favorite_item_not_found"})
     @DescribeError(code = "favorite_item_not_found", message = "Избранный товар не найден")
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void removeFavoriteItem(
+    public void removeItem(
             @RequestParam(name = "item_id") @Min(1) long itemId
     ) throws ApiException {
         favoriteItemService.removeItem(getCurrentUsername(), itemId);

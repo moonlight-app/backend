@@ -35,15 +35,16 @@ public final class FavoritesService {
     private final FavoriteItemRepository favoriteItemRepository;
     private final ProductRepository productRepository;
 
-    public void addItem(User owner, int productId) throws ApiException {
+    public FavoriteItemModel addItem(User owner, int productId) throws ApiException {
         Optional<Product> product = productRepository.findById(productId);
         if (product.isEmpty())
             throw new ApiException("product_not_found", "A product with this ID isn't exist!");
 
-        if (favoriteItemRepository.existsByOwnerEmailAndProductId(owner.getEmail(), productId))
+        if (isFavorited(owner.getEmail(), productId))
             throw new ApiException("favorite_item_already_exists", "This product is already favorited by this user!");
 
-        favoriteItemRepository.save(new FavoriteItem(owner, product.get()));
+        FavoriteItem item = favoriteItemRepository.save(new FavoriteItem(owner, product.get()));
+        return FavoriteItemModel.from(item, product.get());
     }
 
     public Page<FavoriteItemModel> findItems(String ownerEmail, int pageNumber) {
@@ -55,6 +56,10 @@ public final class FavoritesService {
 
         Page<FavoriteItemProj> page = new PageImpl<>(content, pageable, count);
         return page.map(FavoriteItemModel::from);
+    }
+
+    public boolean isFavorited(String ownerEmail, int productId) {
+        return favoriteItemRepository.existsByOwnerEmailAndProductId(ownerEmail, productId);
     }
 
     public Set<Integer> keepOnlyFavoriteIds(String ownerEmail, int[] ids) {
