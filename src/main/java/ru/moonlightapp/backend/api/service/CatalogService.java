@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.api.dto.CatalogFiltersDto;
-import ru.moonlightapp.backend.api.model.CatalogItemModel;
+import ru.moonlightapp.backend.api.model.GridItemModel;
 import ru.moonlightapp.backend.api.model.CategoryMetadataModel;
 import ru.moonlightapp.backend.api.model.FloatRangeModel;
 import ru.moonlightapp.backend.exception.ApiException;
@@ -40,7 +40,7 @@ public final class CatalogService {
         return new CategoryMetadataModel(productType, new FloatRangeModel(minPrice, maxPrice), popularSizes);
     }
 
-    public Page<CatalogItemModel> findItems(
+    public Page<GridItemModel> findItems(
             ProductType productType,
             CatalogFiltersDto filtersDto,
             CatalogSorting sorting,
@@ -51,7 +51,7 @@ public final class CatalogService {
 
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, ITEMS_PER_PAGE, sorting.toJpaSort());
         Page<Product> page = productRepository.findAll(specs, pageRequest);
-        return page.map(CatalogItemModel::from);
+        return page.map(GridItemModel::from);
     }
 
     private static List<Specification<Product>> resolveActiveFilters(ProductType productType, CatalogFiltersDto filtersDto) throws ApiException {

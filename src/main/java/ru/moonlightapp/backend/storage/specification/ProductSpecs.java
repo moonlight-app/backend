@@ -3,14 +3,19 @@ package ru.moonlightapp.backend.storage.specification;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 import ru.moonlightapp.backend.model.attribute.ProductType;
-import ru.moonlightapp.backend.storage.model.content.Product;
-import ru.moonlightapp.backend.storage.model.content.ProductSize;
-import ru.moonlightapp.backend.storage.model.content.ProductSize_;
-import ru.moonlightapp.backend.storage.model.content.Product_;
+import ru.moonlightapp.backend.storage.model.User_;
+import ru.moonlightapp.backend.storage.model.content.*;
 
 import java.util.Collection;
 
 public final class ProductSpecs {
+
+    public static Specification<Product> isFavorite(String ownerEmail) {
+        return (root, query, builder) -> {
+            SetJoin<Product, FavoriteProduct> favoriteProductJoin = root.join(Product_.favoriteProducts, JoinType.INNER);
+            return builder.equal(favoriteProductJoin.get(FavoriteProduct_.owner).get(User_.email), ownerEmail);
+        };
+    }
 
     public static Specification<Product> hasType(ProductType type) {
         return (root, query, builder) -> builder.equal(root.get(Product_.type), type);
@@ -34,7 +39,9 @@ public final class ProductSpecs {
 
     public static Specification<Product> hasSizes(Collection<Float> sizes) {
         return (root, query, builder) -> {
-            query.distinct(true);
+            if (query != null)
+                query.distinct(true);
+
             SetJoin<Product, ProductSize> productSizeJoin = root.join(Product_.productSizes, JoinType.INNER);
             return productSizeJoin.get(ProductSize_.size).in(sizes);
         };

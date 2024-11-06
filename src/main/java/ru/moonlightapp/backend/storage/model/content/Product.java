@@ -64,6 +64,13 @@ public final class Product {
     )
     private Set<ProductSize> productSizes;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "favorite_products",
+            joinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<FavoriteProduct> favoriteProducts;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
