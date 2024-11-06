@@ -208,7 +208,7 @@ public final class DocsOperationCustomizer implements OperationCustomizer {
     private static ApiResponse apiResponse(Operation operation, String name, String description) {
         ApiResponse response = apiResponses(operation).get(name);
         if (response != null)
-            return response;
+            return response.description(description);
 
         response = new ApiResponse().description(description);
         apiResponses(operation).addApiResponse(name, response);

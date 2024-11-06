@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.moonlightapp.backend.api.dto.CatalogFiltersDto;
-import ru.moonlightapp.backend.api.model.GridItemModel;
+import ru.moonlightapp.backend.api.model.CatalogItemModel;
 import ru.moonlightapp.backend.api.model.CategoryMetadataModel;
 import ru.moonlightapp.backend.api.service.CatalogService;
 import ru.moonlightapp.backend.docs.annotation.SuccessResponse;
@@ -31,7 +31,7 @@ public class CatalogApiController extends ApiControllerBase {
     @Operation(summary = "Получение страницы каталога", tags = "catalog-api")
     @SuccessResponse(canBeEmpty = true)
     @GetMapping("/items/{productType}")
-    public ResponseEntity<Page<GridItemModel>> getItems(
+    public ResponseEntity<Page<CatalogItemModel>> getItems(
             @PathVariable ProductType productType,
             @RequestParam(name = "sort_by", defaultValue = "popularity") CatalogSorting sorting,
             @RequestParam(name = "min_price", required = false) @Min(1) Float minPrice,
@@ -42,8 +42,9 @@ public class CatalogApiController extends ApiControllerBase {
             @RequestParam(name = "treasures", required = false) @Min(1) Integer treasures,
             @RequestParam(name = "page", defaultValue = "1") @Min(1) int pageNumber
     ) throws ApiException {
+        String userEmail = findCurrentUsername().orElse(null);
         CatalogFiltersDto filtersDto = new CatalogFiltersDto(minPrice, maxPrice, sizes, audiences, materials, treasures);
-        Page<GridItemModel> page = catalogService.findItems(productType, filtersDto, sorting, pageNumber);
+        Page<CatalogItemModel> page = catalogService.findItems(productType, filtersDto, sorting, pageNumber, userEmail);
         return page.hasContent() ? ResponseEntity.ok(page) : ResponseEntity.noContent().build();
     }
 

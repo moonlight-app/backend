@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.api.dto.CatalogFiltersDto;
-import ru.moonlightapp.backend.api.model.GridItemModel;
+import ru.moonlightapp.backend.api.model.CatalogItemModel;
 import ru.moonlightapp.backend.api.model.CategoryMetadataModel;
 import ru.moonlightapp.backend.api.model.FloatRangeModel;
 import ru.moonlightapp.backend.exception.ApiException;
@@ -30,6 +30,8 @@ public final class CatalogService {
     private final ProductRepository productRepository;
     private final ProductSizeRepository productSizeRepository;
 
+    private final FavoritesService favoriteService;
+
     public CategoryMetadataModel constructCategoryMetadata(ProductType productType) {
         float minPrice = productRepository.findMinPrice(productType);
         float maxPrice = productRepository.findMaxPrice(productType);
@@ -40,18 +42,26 @@ public final class CatalogService {
         return new CategoryMetadataModel(productType, new FloatRangeModel(minPrice, maxPrice), popularSizes);
     }
 
-    public Page<GridItemModel> findItems(
+    public Page<CatalogItemModel> findItems(
             ProductType productType,
             CatalogFiltersDto filtersDto,
             CatalogSorting sorting,
-            int pageNumber
+            int pageNumber,
+            String userEmail
     ) throws ApiException {
         List<Specification<Product>> activeFilters = resolveActiveFilters(productType, filtersDto);
         Specification<Product> specs = Specification.allOf(activeFilters);
 
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, ITEMS_PER_PAGE, sorting.toJpaSort());
         Page<Product> page = productRepository.findAll(specs, pageRequest);
-        return page.map(GridItemModel::from);
+
+        if (userEmail != null) {
+            int[] pagedIds = page.get().mapToInt(Product::getId).toArray();
+            Set<Integer> favoriteIds = favoriteService.keepOnlyFavoriteIds(userEmail, pagedIds);
+            return page.map(product -> CatalogItemModel.from(product, favoriteIds::contains));
+        } else {
+            return page.map(product -> CatalogItemModel.from(product, null));
+        }
     }
 
     private static List<Specification<Product>> resolveActiveFilters(ProductType productType, CatalogFiltersDto filtersDto) throws ApiException {

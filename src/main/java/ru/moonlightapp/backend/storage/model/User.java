@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.moonlightapp.backend.model.attribute.Sex;
+import ru.moonlightapp.backend.storage.model.content.FavoriteItem;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -40,6 +42,10 @@ public final class User implements UserDetails {
 
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_email")
+    private Set<FavoriteItem> favoriteItems;
 
     public User(String email, String password, String name) {
         this(email, password, name, null, null);
