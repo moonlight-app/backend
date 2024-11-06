@@ -69,6 +69,15 @@ public final class OrdersService {
                 .toList();
     }
 
+    public List<OrderItem> closeOrders(long elapsedSecondsThreshold) {
+        List<OrderItem> orderItems = orderItemRepository.findCloseableOrders(elapsedSecondsThreshold);
+        if (!orderItems.isEmpty()) {
+            orderItems.forEach(OrderItem::closeOrder);
+            orderItemRepository.saveAll(orderItems);
+        }
+        return orderItems;
+    }
+
     public Page<OrderItemModel> findItems(String userEmail, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber - 1, ITEMS_PER_PAGE);
 

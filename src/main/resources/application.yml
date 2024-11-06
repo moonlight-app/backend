@@ -37,6 +37,7 @@ logging:
     root: INFO
     '[org.springframework.security]': DEBUG
     '[org.springframework.web]': DEBUG
+    '[ru.moonlightapp.backend]': DEBUG
   pattern:
     console: '%clr([){faint}%clr(%d{dd.MM.yy}){faint} %clr(%d{HH:mm:ss}){magenta}%clr(]){faint} %clr(%5p) %clr(:){faint} %clr(%-40.40logger{0}){cyan} %clr(:){faint} %m%n%wEx'
 
