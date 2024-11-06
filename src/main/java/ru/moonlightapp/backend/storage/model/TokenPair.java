@@ -24,22 +24,18 @@ public final class TokenPair {
     private String accessToken;
 
     @Column(name = "access_token_expires_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant accessTokenExpiresAt;
 
     @Column(name = "refresh_token", nullable = false, unique = true, length = 0)
     private String refreshToken;
 
     @Column(name = "refresh_token_expires_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant refreshTokenExpiresAt;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
     public TokenPair(String userEmail, String accessToken, Instant accessTokenExpiresIn, String refreshToken, Instant refreshTokenExpiresIn) {

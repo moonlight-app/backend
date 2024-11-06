@@ -18,9 +18,11 @@ public final class CartItem {
     private long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_email", nullable = false)
     private User owner;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @Column(name = "size", length = 10)
@@ -30,11 +32,9 @@ public final class CartItem {
     private int count;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
     public CartItem(User owner, Product product, String size, int count) {

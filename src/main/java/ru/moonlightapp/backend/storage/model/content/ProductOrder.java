@@ -34,11 +34,9 @@ public final class ProductOrder {
     private OrderStatus status;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
     public ProductOrder(User owner, Product product, String size, int count) {
