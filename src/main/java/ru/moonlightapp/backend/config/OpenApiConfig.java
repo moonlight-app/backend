@@ -21,8 +21,9 @@ public class OpenApiConfig {
         return openApi -> openApi
                 .info(new Info().title("Moonlight API"))
                 .addTagsItem(new Tag().name("auth-api").description("Authentication Service API"))
+                .addTagsItem(new Tag().name("cart-api").description("Cart RESTful API"))
                 .addTagsItem(new Tag().name("catalog-api").description("Catalog RESTful API (public)"))
-                .addTagsItem(new Tag().name("favorite-items-api").description("Favorite Items RESTful API"))
+                .addTagsItem(new Tag().name("favorites-api").description("Favorites RESTful API"))
                 .addTagsItem(new Tag().name("user-api").description("Users RESTful API"))
                 .servers(List.of(new Server().description("Moonlight").url(serverHost)));
     }

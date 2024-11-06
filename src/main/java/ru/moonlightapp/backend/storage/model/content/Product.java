@@ -68,6 +68,32 @@ public final class Product {
     @JoinColumn(name = "product_id")
     private Set<FavoriteItem> favoriteItems;
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Set<OrderItem> orderItems;
+
+    public String[] getSizesAsArray() {
+        if (!isSized())
+            return null;
+
+        String[] sizes = this.sizes.split(",");
+        return sizes.length != 0 ? sizes : null;
+    }
+
+    public boolean isSized() {
+        return sizes != null && !sizes.isEmpty();
+    }
+
+    public boolean hasSize(String size) {
+        String[] sizes = getSizesAsArray();
+        if (sizes != null)
+            for (String existing : sizes)
+                if (size.equals(existing))
+                    return true;
+
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
