@@ -2,16 +2,16 @@ package ru.moonlightapp.backend.api.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ru.moonlightapp.backend.model.attribute.OrderStatus;
 import ru.moonlightapp.backend.model.attribute.ProductType;
-import ru.moonlightapp.backend.storage.model.content.CartItem;
-import ru.moonlightapp.backend.storage.model.content.Product;
+import ru.moonlightapp.backend.storage.model.content.OrderItem;
 import ru.moonlightapp.backend.storage.projection.CartItemProj;
+import ru.moonlightapp.backend.storage.projection.OrderItemProj;
 
 import java.time.Instant;
-import java.util.function.Function;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record CartItemModel(
+public record OrderItemModel(
         @JsonProperty("item_id") long itemId,
         @JsonProperty("product_id") int productId,
         @JsonProperty("type") ProductType type,
@@ -20,27 +20,27 @@ public record CartItemModel(
         @JsonProperty("size") String size,
         @JsonProperty("count") int count,
         @JsonProperty("preview_url") String previewUrl,
-        @JsonProperty("is_favorite") boolean isFavorite,
+        @JsonProperty("status") OrderStatus status,
         @JsonProperty("created_at") Instant createdAt
 ) {
 
-    public static CartItemModel from(CartItem item, Product product, Function<Integer, Boolean> favoriteStateResolver) {
-        return new CartItemModel(
+    public static OrderItemModel from(OrderItem item, CartItemProj proj) {
+        return new OrderItemModel(
                 item.getId(),
-                product.getId(),
-                product.getType(),
-                product.getName(),
-                product.getPrice(),
+                proj.productId(),
+                proj.type(),
+                proj.name(),
+                proj.price(),
                 item.getSize(),
                 item.getCount(),
-                product.getPreviewUrl(),
-                favoriteStateResolver.apply(product.getId()),
+                proj.previewUrl(),
+                item.getStatus(),
                 item.getCreatedAt()
         );
     }
 
-    public static CartItemModel from(CartItemProj proj, Function<Integer, Boolean> favoriteStateResolver) {
-        return new CartItemModel(
+    public static OrderItemModel from(OrderItemProj proj) {
+        return new OrderItemModel(
                 proj.itemId(),
                 proj.productId(),
                 proj.type(),
@@ -49,7 +49,7 @@ public record CartItemModel(
                 proj.size(),
                 proj.count(),
                 proj.previewUrl(),
-                favoriteStateResolver.apply(proj.productId()),
+                proj.status(),
                 proj.createdAt()
         );
     }

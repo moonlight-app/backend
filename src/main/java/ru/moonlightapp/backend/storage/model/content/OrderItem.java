@@ -7,22 +7,23 @@ import ru.moonlightapp.backend.model.attribute.OrderStatus;
 import ru.moonlightapp.backend.storage.model.User;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
-@Entity @Table(name = "product_orders")
-public final class ProductOrder {
+@Entity @Table(name = "order_items")
+public final class OrderItem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User owner;
+    @Column(name = "owner_email", nullable = false)
+    private String userEmail;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private int productId;
 
     @Column(name = "size", length = 10)
     private String size;
@@ -39,13 +40,21 @@ public final class ProductOrder {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    public ProductOrder(User owner, Product product, String size, int count) {
-        this.owner = owner;
-        this.product = product;
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_email", insertable = false, updatable = false)
+    private User owner;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
+
+    public OrderItem(String userEmail, int productId, String size, int count) {
+        this.userEmail = userEmail;
+        this.productId = productId;
         this.size = size;
         this.count = count;
         this.status = OrderStatus.IN_DELIVERY;
-        this.createdAt = Instant.now();
+        this.createdAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         this.updatedAt = createdAt;
     }
 
@@ -55,7 +64,7 @@ public final class ProductOrder {
     }
 
     private void onDataUpdated() {
-        this.updatedAt = Instant.now();
+        this.updatedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
     }
 
     @Override
@@ -63,7 +72,7 @@ public final class ProductOrder {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProductOrder that = (ProductOrder) o;
+        OrderItem that = (OrderItem) o;
         return id == that.id;
     }
 
@@ -74,10 +83,10 @@ public final class ProductOrder {
 
     @Override
     public String toString() {
-        return "ProductOrder{" +
+        return "OrderItem{" +
                 "id=" + id +
-                ", owner=" + owner +
-                ", product=" + product +
+                ", userEmail='" + userEmail + '\'' +
+                ", productId=" + productId +
                 ", size='" + size + '\'' +
                 ", count=" + count +
                 ", status=" + status +

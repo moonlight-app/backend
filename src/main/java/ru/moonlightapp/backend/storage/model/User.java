@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.moonlightapp.backend.model.attribute.Sex;
-import ru.moonlightapp.backend.storage.model.content.FavoriteItem;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -53,7 +52,7 @@ public final class User implements UserDetails {
         this.name = name;
         this.birthDate = birthDate;
         this.sex = sex;
-        this.createdAt = Instant.now();
+        this.createdAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         this.updatedAt = createdAt;
     }
 
@@ -98,7 +97,7 @@ public final class User implements UserDetails {
     }
 
     private void onDataUpdated() {
-        this.updatedAt = Instant.now();
+        this.updatedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
     }
 
     @Override

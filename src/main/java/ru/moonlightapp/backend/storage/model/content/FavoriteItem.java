@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ru.moonlightapp.backend.storage.model.User;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Getter
@@ -17,11 +18,11 @@ public final class FavoriteItem {
     @Column(name = "id", nullable = false)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User owner;
+    @Column(name = "owner_email", nullable = false)
+    private String userEmail;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
+    @Column(name = "product_id", nullable = false)
+    private int productId;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -29,15 +30,23 @@ public final class FavoriteItem {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    public FavoriteItem(User owner, Product product) {
-        this.owner = owner;
-        this.product = product;
-        this.createdAt = Instant.now();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_email", insertable = false, updatable = false)
+    private User owner;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
+    private Product product;
+
+    public FavoriteItem(String userEmail, int productId) {
+        this.userEmail = userEmail;
+        this.productId = productId;
+        this.createdAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         this.updatedAt = createdAt;
     }
 
     private void onDataUpdated() {
-        this.updatedAt = Instant.now();
+        this.updatedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
     }
 
     @Override
@@ -58,8 +67,8 @@ public final class FavoriteItem {
     public String toString() {
         return "FavoriteItem{" +
                 "id=" + id +
-                ", owner=" + owner +
-                ", product=" + product +
+                ", userEmail='" + userEmail + '\'' +
+                ", productId=" + productId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

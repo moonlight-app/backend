@@ -66,6 +66,10 @@ public final class Product {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
+    private Set<CartItem> cartItems;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Set<FavoriteItem> favoriteItems;
 
     @OneToMany(fetch = FetchType.LAZY)

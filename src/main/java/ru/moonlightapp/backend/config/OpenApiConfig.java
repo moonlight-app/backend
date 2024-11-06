@@ -24,6 +24,7 @@ public class OpenApiConfig {
                 .addTagsItem(new Tag().name("cart-api").description("Cart RESTful API"))
                 .addTagsItem(new Tag().name("catalog-api").description("Catalog RESTful API (public)"))
                 .addTagsItem(new Tag().name("favorites-api").description("Favorites RESTful API"))
+                .addTagsItem(new Tag().name("orders-api").description("Orders RESTful API"))
                 .addTagsItem(new Tag().name("user-api").description("Users RESTful API"))
                 .servers(List.of(new Server().description("Moonlight").url(serverHost)));
     }

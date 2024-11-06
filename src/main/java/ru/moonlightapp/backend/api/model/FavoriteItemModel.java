@@ -1,5 +1,6 @@
 package ru.moonlightapp.backend.api.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ru.moonlightapp.backend.model.attribute.ProductType;
 import ru.moonlightapp.backend.storage.model.content.FavoriteItem;
@@ -8,6 +9,7 @@ import ru.moonlightapp.backend.storage.projection.FavoriteItemProj;
 
 import java.time.Instant;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record FavoriteItemModel(
         @JsonProperty("item_id") long itemId,
         @JsonProperty("product_id") int productId,

@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.api.model.CartItemModel;
 import ru.moonlightapp.backend.exception.ApiException;
-import ru.moonlightapp.backend.storage.model.User;
-import ru.moonlightapp.backend.storage.model.User_;
 import ru.moonlightapp.backend.storage.model.content.CartItem;
 import ru.moonlightapp.backend.storage.model.content.CartItem_;
 import ru.moonlightapp.backend.storage.model.content.Product;
@@ -36,7 +34,7 @@ public final class CartService {
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
 
-    public CartItemModel addItem(User owner, int productId, String size, int count) throws ApiException {
+    public CartItemModel addItem(String userEmail, int productId, String size, int count) throws ApiException {
         Optional<Product> product = productRepository.findById(productId);
         if (product.isEmpty())
             throw new ApiException("product_not_found", "A product with this ID isn't exist!");
@@ -51,32 +49,46 @@ public final class CartService {
             }
         }
 
-        CartItem item = cartItemRepository.save(new CartItem(owner, product.get(), size, count));
-        return CartItemModel.from(item, product.get(), id -> favoritesService.isFavorited(owner.getEmail(), id));
+        CartItem item = cartItemRepository.save(new CartItem(userEmail, productId, size, count));
+        return CartItemModel.from(item, product.get(), id -> favoritesService.isFavorited(userEmail, id));
     }
 
-    public Page<CartItemModel> findItems(String ownerEmail, int pageNumber) {
+    public void changeCount(String userEmail, long itemId, int count) throws ApiException {
+        CartItem cartItem = cartItemRepository.findByIdAndUserEmail(itemId, userEmail).orElseThrow(() -> new ApiException(
+                "cart_item_not_found",
+                "A cart item not found!"
+        ));
+
+        if (cartItem.updateCount(count)) {
+            cartItemRepository.save(cartItem);
+        }
+    }
+
+    public Page<CartItemModel> findItems(String userEmail, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber - 1, ITEMS_PER_PAGE);
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        List<CartItemProj> content = queryItems(builder, ownerEmail, pageable);
-        long count = countItems(builder, ownerEmail);
+        List<CartItemProj> content = queryItems(builder, userEmail, pageable);
+        long count = countItems(builder, userEmail);
 
         Page<CartItemProj> page = new PageImpl<>(content, pageable, count);
         int[] pagedIds = page.get().mapToInt(CartItemProj::productId).toArray();
-        Set<Integer> favoriteIds = favoritesService.keepOnlyFavoriteIds(ownerEmail, pagedIds);
+        Set<Integer> favoriteIds = favoritesService.keepOnlyFavoriteIds(userEmail, pagedIds);
         return page.map(proj -> CartItemModel.from(proj, favoriteIds::contains));
     }
 
-    public void removeItem(String ownerEmail, long itemId) throws ApiException {
-        Optional<CartItem> existing = cartItemRepository.findById(itemId);
-        if (existing.isEmpty() || !ownerEmail.equals(existing.map(CartItem::getOwner).map(User::getEmail).orElse(null)))
+    public void removeItem(String userEmail, long itemId) throws ApiException {
+        if (!cartItemRepository.existsByIdAndUserEmail(itemId, userEmail))
             throw new ApiException("cart_item_not_found", "A cart item not found!");
 
         cartItemRepository.deleteById(itemId);
     }
 
-    private List<CartItemProj> queryItems(CriteriaBuilder builder, String ownerEmail, Pageable pageable) {
+    public void removeItems(Iterable<Long> ids) {
+        cartItemRepository.deleteAllById(ids);
+    }
+
+    private List<CartItemProj> queryItems(CriteriaBuilder builder, String userEmail, Pageable pageable) {
         CriteriaQuery<CartItemProj> query = builder.createQuery(CartItemProj.class);
 
         Root<Product> root = query.from(Product.class);
@@ -94,7 +106,7 @@ public final class CartService {
                 join.get(CartItem_.createdAt))
         );
 
-        query.where(builder.equal(join.get(CartItem_.owner).get(User_.email), ownerEmail));
+        query.where(builder.equal(join.get(CartItem_.userEmail), userEmail));
         query.orderBy(builder.desc(join.get(CartItem_.createdAt)));
 
         return entityManager.createQuery(query)
@@ -103,16 +115,42 @@ public final class CartService {
                 .getResultList();
     }
 
-    private long countItems(CriteriaBuilder builder, String ownerEmail) {
+    private long countItems(CriteriaBuilder builder, String userEmail) {
         CriteriaQuery<Long> query = builder.createQuery(Long.class);
 
         Root<Product> root = query.from(Product.class);
         Join<Product, CartItem> join = root.join(Product_.cartItems, JoinType.INNER);
 
         query.select(builder.count(root));
-        query.where(builder.equal(join.get(CartItem_.owner).get(User_.email), ownerEmail));
+        query.where(builder.equal(join.get(CartItem_.userEmail), userEmail));
 
         return entityManager.createQuery(query).getSingleResult();
+    }
+
+    List<CartItemProj> queryOwnedItems(CriteriaBuilder builder, String userEmail, Set<Long> ids) {
+        CriteriaQuery<CartItemProj> query = builder.createQuery(CartItemProj.class);
+
+        Root<CartItem> root = query.from(CartItem.class);
+        Join<CartItem, Product> join = root.join(CartItem_.product, JoinType.INNER);
+
+        query.select(builder.construct(CartItemProj.class,
+                root.get(CartItem_.id),
+                join.get(Product_.id),
+                join.get(Product_.type),
+                join.get(Product_.name),
+                join.get(Product_.price),
+                root.get(CartItem_.size),
+                root.get(CartItem_.count),
+                join.get(Product_.previewUrl),
+                root.get(CartItem_.createdAt))
+        );
+
+        query.where(builder.and(
+                builder.equal(root.get(CartItem_.userEmail), userEmail),
+                root.get(CartItem_.id).in(ids)
+        ));
+
+        return entityManager.createQuery(query).getResultList();
     }
 
 }

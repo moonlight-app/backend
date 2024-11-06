@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -44,7 +45,7 @@ public final class TokenPair {
         this.accessTokenExpiresAt = accessTokenExpiresIn;
         this.refreshToken = refreshToken;
         this.refreshTokenExpiresAt = refreshTokenExpiresIn;
-        this.createdAt = Instant.now();
+        this.createdAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         this.updatedAt = createdAt;
     }
 
@@ -77,7 +78,7 @@ public final class TokenPair {
     }
 
     private void onDataUpdated() {
-        this.updatedAt = Instant.now();
+        this.updatedAt = Instant.now().truncatedTo(ChronoUnit.SECONDS);
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.moonlightapp.backend.api.model.FavoriteItemModel;
 import ru.moonlightapp.backend.api.service.FavoritesService;
-import ru.moonlightapp.backend.api.service.UserService;
 import ru.moonlightapp.backend.docs.annotation.BadRequestResponse;
 import ru.moonlightapp.backend.docs.annotation.DescribeError;
 import ru.moonlightapp.backend.docs.annotation.SuccessResponse;
@@ -20,20 +19,19 @@ import ru.moonlightapp.backend.exception.ApiException;
 @RequiredArgsConstructor
 public class FavoritesApiController extends ApiControllerBase {
 
-    private final FavoritesService favoriteItemService;
-    private final UserService userService;
+    private final FavoritesService favoritesService;
 
     @Operation(summary = "Добавление товара в избранные", tags = "favorites-api")
     @SuccessResponse("Товар добавлен в избранные")
     @BadRequestResponse({"product_not_found", "favorite_item_already_exists"})
     @DescribeError(code = "product_not_found", system = true, message = "Товар не существует")
     @DescribeError(code = "favorite_item_already_exists", message = "Товар уже в избранных")
-    @PatchMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public FavoriteItemModel addItem(
             @RequestParam(name = "product_id") @Min(1) int productId
     ) throws ApiException {
-        return favoriteItemService.addItem(getCurrentUser(userService), productId);
+        return favoritesService.addItem(getCurrentUsername(), productId);
     }
 
     @Operation(summary = "Получение страницы избранных", tags = "favorites-api")
@@ -42,7 +40,7 @@ public class FavoritesApiController extends ApiControllerBase {
     public ResponseEntity<Page<FavoriteItemModel>> getItems(
             @RequestParam(name = "page", defaultValue = "1") @Min(1) int pageNumber
     ) throws ApiException {
-        Page<FavoriteItemModel> page = favoriteItemService.findItems(getCurrentUsername(), pageNumber);
+        Page<FavoriteItemModel> page = favoritesService.findItems(getCurrentUsername(), pageNumber);
         return page.hasContent() ? ResponseEntity.ok(page) : ResponseEntity.noContent().build();
     }
 
@@ -55,7 +53,7 @@ public class FavoritesApiController extends ApiControllerBase {
     public void removeItem(
             @RequestParam(name = "item_id") @Min(1) long itemId
     ) throws ApiException {
-        favoriteItemService.removeItem(getCurrentUsername(), itemId);
+        favoritesService.removeItem(getCurrentUsername(), itemId);
     }
 
 }
