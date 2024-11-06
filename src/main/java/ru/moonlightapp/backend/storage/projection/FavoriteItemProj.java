@@ -4,7 +4,7 @@ import ru.moonlightapp.backend.model.attribute.ProductType;
 
 import java.time.Instant;
 
-public record ProductForeignProj(
+public record FavoriteItemProj(
         long itemId,
         int productId,
         ProductType type,

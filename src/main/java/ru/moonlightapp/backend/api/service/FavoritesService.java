@@ -8,7 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.moonlightapp.backend.api.model.ForeignItemModel;
+import ru.moonlightapp.backend.api.model.FavoriteItemModel;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.User;
 import ru.moonlightapp.backend.storage.model.User_;
@@ -16,16 +16,13 @@ import ru.moonlightapp.backend.storage.model.content.FavoriteItem;
 import ru.moonlightapp.backend.storage.model.content.FavoriteItem_;
 import ru.moonlightapp.backend.storage.model.content.Product;
 import ru.moonlightapp.backend.storage.model.content.Product_;
-import ru.moonlightapp.backend.storage.projection.ProductForeignProj;
+import ru.moonlightapp.backend.storage.projection.FavoriteItemProj;
 import ru.moonlightapp.backend.storage.repository.content.FavoriteItemRepository;
 import ru.moonlightapp.backend.storage.repository.content.ProductRepository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static ru.moonlightapp.backend.api.model.ForeignItemModel.INCLUDE_CREATED_AT;
-import static ru.moonlightapp.backend.api.model.ForeignItemModel.INCLUDE_TYPE;
 
 @Service
 @RequiredArgsConstructor
@@ -49,15 +46,15 @@ public final class FavoritesService {
         favoriteItemRepository.save(new FavoriteItem(owner, product.get()));
     }
 
-    public Page<ForeignItemModel> findItems(String ownerEmail, int pageNumber) {
+    public Page<FavoriteItemModel> findItems(String ownerEmail, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber - 1, ITEMS_PER_PAGE);
 
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        List<ProductForeignProj> content = queryItems(builder, ownerEmail, pageable);
+        List<FavoriteItemProj> content = queryItems(builder, ownerEmail, pageable);
         long count = countItems(builder, ownerEmail);
 
-        Page<ProductForeignProj> page = new PageImpl<>(content, pageable, count);
-        return page.map(proj -> ForeignItemModel.from(proj, INCLUDE_TYPE | INCLUDE_CREATED_AT, null));
+        Page<FavoriteItemProj> page = new PageImpl<>(content, pageable, count);
+        return page.map(FavoriteItemModel::from);
     }
 
     public Set<Integer> keepOnlyFavoriteIds(String ownerEmail, int[] ids) {
@@ -72,13 +69,13 @@ public final class FavoritesService {
         favoriteItemRepository.deleteById(itemId);
     }
 
-    private List<ProductForeignProj> queryItems(CriteriaBuilder builder, String ownerEmail, Pageable pageable) {
-        CriteriaQuery<ProductForeignProj> query = builder.createQuery(ProductForeignProj.class);
+    private List<FavoriteItemProj> queryItems(CriteriaBuilder builder, String ownerEmail, Pageable pageable) {
+        CriteriaQuery<FavoriteItemProj> query = builder.createQuery(FavoriteItemProj.class);
 
         Root<Product> root = query.from(Product.class);
         Join<Product, FavoriteItem> join = root.join(Product_.favoriteItems, JoinType.INNER);
 
-        query.select(builder.construct(ProductForeignProj.class,
+        query.select(builder.construct(FavoriteItemProj.class,
                 join.get(FavoriteItem_.id),
                 root.get(Product_.id),
                 root.get(Product_.type),

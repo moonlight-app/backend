@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.moonlightapp.backend.api.model.ForeignItemModel;
+import ru.moonlightapp.backend.api.model.FavoriteItemModel;
 import ru.moonlightapp.backend.api.service.FavoritesService;
 import ru.moonlightapp.backend.api.service.UserService;
 import ru.moonlightapp.backend.docs.annotation.BadRequestResponse;
@@ -39,10 +39,10 @@ public class FavoritesApiController extends ApiControllerBase {
     @Operation(summary = "Получение страницы избранных", tags = "favorite-items-api")
     @SuccessResponse(canBeEmpty = true)
     @GetMapping
-    public ResponseEntity<Page<ForeignItemModel>> getItems(
+    public ResponseEntity<Page<FavoriteItemModel>> getItems(
             @RequestParam(name = "page", defaultValue = "1") @Min(1) int pageNumber
     ) throws ApiException {
-        Page<ForeignItemModel> page = favoriteItemService.findItems(getCurrentUsername(), pageNumber);
+        Page<FavoriteItemModel> page = favoriteItemService.findItems(getCurrentUsername(), pageNumber);
         return page.hasContent() ? ResponseEntity.ok(page) : ResponseEntity.noContent().build();
     }
 
