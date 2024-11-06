@@ -1,0 +1,12 @@
+[versions]
+commonsIo = "2.17.0"
+jjwt = "0.12.6"
+jpaModelgen = "6.6.1.Final"
+springdocOpenapi = "2.6.0"
+
+[libraries]
+commonsIo = { module = "commons-io:commons-io", version.ref = "commonsIo" }
+jjwtImpl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwtJackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+jpaModelgen = { module = "org.hibernate:hibernate-jpamodelgen", version.ref = "jpaModelgen" }
+springdocOpenapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdocOpenapi" }
