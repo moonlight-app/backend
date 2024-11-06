@@ -43,10 +43,6 @@ public final class User implements UserDetails {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_email")
-    private Set<FavoriteItem> favoriteItems;
-
     public User(String email, String password, String name) {
         this(email, password, name, null, null);
     }
