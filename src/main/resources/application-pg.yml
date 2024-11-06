@@ -1,10 +1,11 @@
 spring:
-  data:
-    jdbc:
-      dialect: postgresql
-
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://127.0.0.1/${PG_DATABASE}
     username: ${PG_USERNAME}
     password: ${PG_PASSWORD}
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: 'ru.moonlightapp.backend.storage.dialect.CustomPostgreSQLDialect'
