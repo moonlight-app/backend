@@ -23,28 +23,6 @@ public final class UserService {
         return userRepository.findById(email);
     }
 
-    public boolean isUserExist(String email) {
-        return userRepository.existsById(email);
-    }
-
-    public void changeName(User user, String name) {
-        if (user.changeName(name)) {
-            userRepository.save(user);
-        }
-    }
-
-    public void changeBirthDate(User user, LocalDate birthDate) {
-        if (user.changeBirthDate(birthDate)) {
-            userRepository.save(user);
-        }
-    }
-
-    public void changeSex(User user, Sex sex) {
-        if (user.changeSex(sex)) {
-            userRepository.save(user);
-        }
-    }
-
     public void changePassword(User user, String currentPassword, String newPassword) throws ApiException {
         if (!passwordEncoder.matches(currentPassword, user.getPassword()))
             throw new ApiException("wrong_password", "Password isn't correct");
@@ -72,10 +50,6 @@ public final class UserService {
         if (updated) {
             userRepository.save(user);
         }
-    }
-
-    public void deleteUser(User user) {
-        userRepository.delete(user);
     }
 
 }
