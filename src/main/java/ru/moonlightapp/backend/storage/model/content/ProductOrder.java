@@ -31,7 +31,6 @@ public final class ProductOrder {
     private int count;
 
     @Column(name = "status", nullable = false, length = 11)
-    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "created_at", nullable = false)
