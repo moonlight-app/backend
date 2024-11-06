@@ -34,11 +34,9 @@ public final class EmailConfirmation {
     private Instant requestedAt;
 
     @Column(name = "created_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
     public EmailConfirmation(String email) {
