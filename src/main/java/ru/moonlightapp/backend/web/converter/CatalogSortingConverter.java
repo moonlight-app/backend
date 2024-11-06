@@ -2,7 +2,7 @@ package ru.moonlightapp.backend.web.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-import ru.moonlightapp.backend.model.CatalogSorting;
+import ru.moonlightapp.backend.model.attribute.CatalogSorting;
 
 @Component
 public final class CatalogSortingConverter implements Converter<String, CatalogSorting> {

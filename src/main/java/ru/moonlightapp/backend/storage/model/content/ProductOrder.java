@@ -3,7 +3,7 @@ package ru.moonlightapp.backend.storage.model.content;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.moonlightapp.backend.model.OrderStatus;
+import ru.moonlightapp.backend.model.attribute.OrderStatus;
 import ru.moonlightapp.backend.storage.model.User;
 
 import java.time.Instant;
@@ -30,7 +30,8 @@ public final class ProductOrder {
     @Column(name = "count", nullable = false)
     private int count;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, length = 11)
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @Column(name = "created_at", nullable = false)

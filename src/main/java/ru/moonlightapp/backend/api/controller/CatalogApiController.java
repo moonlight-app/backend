@@ -12,7 +12,7 @@ import ru.moonlightapp.backend.api.model.CategoryMetadataModel;
 import ru.moonlightapp.backend.api.service.CatalogService;
 import ru.moonlightapp.backend.docs.annotation.SuccessResponse;
 import ru.moonlightapp.backend.exception.ApiException;
-import ru.moonlightapp.backend.model.CatalogSorting;
+import ru.moonlightapp.backend.model.attribute.CatalogSorting;
 import ru.moonlightapp.backend.model.attribute.ProductType;
 
 @RestController

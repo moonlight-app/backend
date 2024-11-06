@@ -1,10 +1,9 @@
-package ru.moonlightapp.backend.model;
+package ru.moonlightapp.backend.model.attribute;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;
-import ru.moonlightapp.backend.model.attribute.KeyedEnum;
 import ru.moonlightapp.backend.util.KeyedEnumConstantFinder;
 
 import java.util.Optional;
