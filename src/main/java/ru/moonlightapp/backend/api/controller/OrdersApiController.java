@@ -32,7 +32,7 @@ public class OrdersApiController extends ApiControllerBase {
     @DescribeError(code = "missing_data", system = true, message = "Некоторые данные отсутствуют", payload = "`notFoundIds`")
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderItemModel> addItem(
+    public List<OrderItemModel> addItems(
             @RequestParam(name = "cart_items") @NotEmpty String rawCartItemIds
     ) throws ApiException {
         return ordersService.addItems(getCurrentUsername(), rawCartItemIds);
