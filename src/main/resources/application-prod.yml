@@ -1,0 +1,5 @@
+server:
+  cors:
+    allowed-origin: 'https://moonlight-app.ru'
+
+  host: 'https://moonlight-app.ru'

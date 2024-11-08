@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     java
     id("org.springframework.boot") version "3.3.5"
@@ -44,6 +46,29 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 }
 
+tasks.getByName<BootJar>("bootJar") {
+    enabled = false
+}
+
+tasks.getByName<Jar>("jar") {
+    archiveBaseName = "moonlight-app"
+    archiveClassifier = ""
+    archiveVersion = ""
+    enabled = true
+    manifest {
+        attributes["Main-Class"] = "ru.moonlightapp.backend.MoonlightApplication"
+    }
+}
+
+tasks.register<Copy>("copyDependencies") {
+    from(configurations.runtimeClasspath.get())
+    into(layout.buildDirectory.dir("libs/libraries"))
+}
+
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-parameters")
+}
+
+tasks.build {
+    finalizedBy("copyDependencies")
 }
