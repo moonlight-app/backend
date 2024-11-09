@@ -1,11 +1,10 @@
 package ru.moonlightapp.backend.web.auth.dto;
 
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.format.annotation.DateTimeFormat;
 import ru.moonlightapp.backend.model.attribute.Sex;
 import ru.moonlightapp.backend.validation.annotation.EmailPattern;
 
@@ -21,7 +20,7 @@ public record SignUpCompleteDto(
         @NotBlank @Size(min = 1, max = 64)
         String name,
         @Past
-        @Temporal(TemporalType.DATE)
+        @DateTimeFormat(pattern = "dd.MM.yyyy")
         LocalDate birthDate,
         Sex sex
 ) {
