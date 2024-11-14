@@ -13,6 +13,10 @@ public final class EmailPatternValidator implements ConstraintValidator<EmailPat
 
     @Override
     public boolean isValid(Object object, ConstraintValidatorContext context) {
+        return isValidEmail(object);
+    }
+
+    public static boolean isValidEmail(Object object) {
         if (object instanceof String email) {
             return hasValidEmailPattern(email);
         } else if (object instanceof String[] emails) {

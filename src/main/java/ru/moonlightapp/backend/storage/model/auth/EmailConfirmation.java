@@ -1,15 +1,16 @@
 package ru.moonlightapp.backend.storage.model.auth;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
 import static ru.moonlightapp.backend.web.auth.service.EmailConfirmationService.*;
 
 @Getter
+@Builder(setterPrefix = "with")
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity @Table(name = "email_confirmations")
 public final class EmailConfirmation {
 
@@ -29,8 +30,8 @@ public final class EmailConfirmation {
     @Column(name = "is_confirmed", nullable = false)
     private boolean confirmed;
 
-    @Column(name = "requested_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "requested_at", nullable = false)
     private Instant requestedAt;
 
     @Column(name = "created_at", nullable = false)

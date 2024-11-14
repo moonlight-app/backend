@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.TokenPair;
 import ru.moonlightapp.backend.storage.repository.TokenPairRepository;
@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public final class JwtTokenService {
 

@@ -44,6 +44,9 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.getByName<BootJar>("bootJar") {
@@ -67,6 +70,10 @@ tasks.register<Copy>("copyDependencies") {
 
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-parameters")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 tasks.build {
