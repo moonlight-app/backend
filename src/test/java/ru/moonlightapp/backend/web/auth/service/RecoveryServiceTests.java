@@ -100,7 +100,13 @@ public final class RecoveryServiceTests {
     @Test
     void whenPerformWithKnownEmail_thenSuccess() throws ApiException {
         String email = "test@test.com";
-        when(userRepository.existsById(email)).thenReturn(true);
+
+        User user = User.builder()
+                .withEmail(email)
+                .withName("Name")
+                .build();
+
+        when(userRepository.findById(email)).thenReturn(Optional.of(user));
 
         assertDoesNotThrow(() -> recoveryService.performRecovery(email, "secret-password", ""));
 
