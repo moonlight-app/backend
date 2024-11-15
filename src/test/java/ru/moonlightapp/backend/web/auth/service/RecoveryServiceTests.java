@@ -63,4 +63,50 @@ public final class RecoveryServiceTests {
         );
     }
 
+    @Test
+    void whenConfirmWithNotKnownBeforeEmail_thenThrowsApiException() {
+        String email = "test@test.com";
+
+        ApiException exception = assertThrows(
+                ApiException.class,
+                () -> recoveryService.processEmailConfirmation(email, "", "")
+        );
+
+        assertEquals(exception.getErrorCode(), "user_not_found");
+    }
+
+    @Test
+    void whenConfirmWithKnownEmail_thenSuccess() throws ApiException {
+        String email = "test@test.com";
+        when(userRepository.existsById(email)).thenReturn(true);
+
+        assertDoesNotThrow(() -> recoveryService.processEmailConfirmation(email, "", ""));
+
+        verify(emailConfirmationService, times(1)).processEmailConfirmation(anyString(), anyString(), anyString());
+    }
+
+    @Test
+    void whenPerformWithNotKnownBeforeEmail_thenThrowsApiException() {
+        String email = "test@test.com";
+
+        ApiException exception = assertThrows(
+                ApiException.class,
+                () -> recoveryService.performRecovery(email, "", "")
+        );
+
+        assertEquals(exception.getErrorCode(), "user_not_found");
+    }
+
+    @Test
+    void whenPerformWithKnownEmail_thenSuccess() throws ApiException {
+        String email = "test@test.com";
+        when(userRepository.existsById(email)).thenReturn(true);
+
+        assertDoesNotThrow(() -> recoveryService.performRecovery(email, "secret-password", ""));
+
+        verify(emailConfirmationService, times(1)).validateEmailConfirmation(anyString(), anyString());
+        verify(userRepository, times(1)).save(any(User.class));
+        verify(emailConfirmationService, times(1)).forgetEmailConfirmation(anyString());
+    }
+
 }
