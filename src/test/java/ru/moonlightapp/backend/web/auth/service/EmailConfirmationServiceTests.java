@@ -60,7 +60,7 @@ public final class EmailConfirmationServiceTests {
 
         EmailConfirmation confirmation = EmailConfirmation.builder()
                 .withEmail(email)
-                .withRequestedAt(Instant.now().minusSeconds(REQUEST_CAN_BE_RENEWED_IN))
+                .withRequestedAt(Instant.now().minusSeconds(REQUEST_CAN_BE_RENEWED_IN + 1))
                 .build();
 
         when(emailConfirmationRepository.findById(email)).thenReturn(Optional.of(confirmation));
@@ -143,7 +143,7 @@ public final class EmailConfirmationServiceTests {
 
         EmailConfirmation confirmation = EmailConfirmation.builder()
                 .withEmail(email)
-                .withRequestedAt(Instant.now().minusSeconds(REQUEST_WILL_BE_EXPIRED_IN))
+                .withRequestedAt(Instant.now().minusSeconds(REQUEST_WILL_BE_EXPIRED_IN + 1))
                 .build();
 
         when(emailConfirmationRepository.findById(email)).thenReturn(Optional.of(confirmation));

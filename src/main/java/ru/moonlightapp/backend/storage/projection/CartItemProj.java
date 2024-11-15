@@ -1,9 +1,11 @@
 package ru.moonlightapp.backend.storage.projection;
 
+import lombok.Builder;
 import ru.moonlightapp.backend.model.attribute.ProductType;
 
 import java.time.Instant;
 
+@Builder(setterPrefix = "with")
 public record CartItemProj(
         long itemId,
         int productId,

@@ -1,8 +1,7 @@
 package ru.moonlightapp.backend.storage.model.content;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.moonlightapp.backend.storage.model.User;
 
 import java.time.Instant;
@@ -10,7 +9,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Getter
+@Builder(setterPrefix = "with")
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity @Table(name = "cart_items")
 public final class CartItem {
 

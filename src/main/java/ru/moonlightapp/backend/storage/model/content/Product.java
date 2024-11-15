@@ -1,15 +1,16 @@
 package ru.moonlightapp.backend.storage.model.content;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.moonlightapp.backend.model.attribute.ProductType;
 
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
+@Builder(setterPrefix = "with")
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity @Table(name = "products")
 public final class Product {
 
