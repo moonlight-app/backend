@@ -50,7 +50,7 @@ public final class EmailConfirmation {
         return attemptsLeft <= 0;
     }
 
-    public boolean canBeRenewed() {
+    public boolean isUnrenewable() {
         return isExpired() || requestedAt.plusSeconds(REQUEST_CAN_BE_RENEWED_IN).isBefore(Instant.now());
     }
 

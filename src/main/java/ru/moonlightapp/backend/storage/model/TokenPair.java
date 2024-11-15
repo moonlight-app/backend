@@ -1,8 +1,7 @@
 package ru.moonlightapp.backend.storage.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -10,7 +9,9 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 @Getter
+@Builder(setterPrefix = "with")
 @NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity @Table(name = "token_pairs")
 public final class TokenPair {
 

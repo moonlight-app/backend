@@ -47,7 +47,7 @@ public final class EmailConfirmationService {
                 throw new ApiException("email_already_confirmed", "This email is already confirmed");
 
             if (renew) {
-                if (!existing.get().canBeRenewed()) {
+                if (existing.get().isUnrenewable()) {
                     throw new ApiException(
                             "email_confirmation_unrenewable",
                             "This email already has a pending confirmation request that cannot be renewed yet"

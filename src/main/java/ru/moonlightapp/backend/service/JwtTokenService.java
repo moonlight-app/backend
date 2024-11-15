@@ -1,6 +1,7 @@
 package ru.moonlightapp.backend.service;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -93,6 +94,8 @@ public final class JwtTokenService {
                 }
             } catch (ApiException ex) {
                 throw ex;
+            } catch (ExpiredJwtException ex) {
+                throw new ApiException(HttpStatus.FORBIDDEN, "token_is_expired", "Your access token is expired!");
             } catch (Exception ex) {
                 log.warn("Invalid JWT token: {} ({})", ex.getMessage(), ex.getClass().getName());
             }
@@ -122,11 +125,11 @@ public final class JwtTokenService {
         }
     }
 
-    private String generateJwtAccessToken(String username, Instant expiration) {
+    public String generateJwtAccessToken(String username, Instant expiration) {
         return generateJwtToken(username, expiration, Jwts.SIG.HS256, 16);
     }
 
-    private String generateJwtRefreshToken(String username, Instant expiration) {
+    public String generateJwtRefreshToken(String username, Instant expiration) {
         return generateJwtToken(username, expiration, Jwts.SIG.HS512, 128);
     }
 

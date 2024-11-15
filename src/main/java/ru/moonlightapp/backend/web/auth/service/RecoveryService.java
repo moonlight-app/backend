@@ -58,8 +58,7 @@ public final class RecoveryService {
     }
 
     public void processEmailConfirmation(String email, String code, String proofKey) throws ApiException {
-        Optional<User> user = userRepository.findById(email);
-        if (user.isEmpty())
+        if (!userRepository.existsById(email))
             throw new ApiException("user_not_found", "User not found");
 
         confirmationService.processEmailConfirmation(email, code, proofKey);

@@ -23,7 +23,7 @@ import java.util.Optional;
 import static ru.moonlightapp.backend.service.JwtTokenService.tryFetchBearerToken;
 
 @RequiredArgsConstructor
-public class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
+public final class JwtTokenAuthorizationFilter extends OncePerRequestFilter {
 
     private static final String TOKEN_REFRESH_ENDPOINT = "/auth/token/refresh";
 
