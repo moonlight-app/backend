@@ -78,12 +78,14 @@ public final class AuthProcessingController {
     @BadRequestResponse({"user_already_exists", "email_not_confirmed", "wrong_proof_key"})
     @DescribeError(code = "user_already_exists", system = true, message = "Пользователь с таким адресом эл. почты уже зарегистрирован")
     @PostMapping(value = "/sign-up/complete", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public void processSignUpComplete(@Valid SignUpCompleteDto dto, HttpServletRequest request) throws ApiException {
+    @ResponseStatus(HttpStatus.TEMPORARY_REDIRECT)
+    public void processSignUpComplete(@Valid SignUpCompleteDto dto, HttpServletRequest request, HttpServletResponse response) throws ApiException {
         registrationService.registerNewUser(
                 dto.email(), dto.password(), extractProofKey(request),
-                dto.name(), dto.birthDate(), dto.sex() //Sex.findByKey(dto.getSex()).orElse(null)
+                dto.name(), dto.birthDate(), dto.sex()
         );
+
+        response.setHeader("Location", "/auth/sign-in");
     }
 
     @Operation(summary = "Запрос кода восстановления доступа", tags = "auth-api")
