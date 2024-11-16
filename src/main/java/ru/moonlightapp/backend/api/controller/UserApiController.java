@@ -58,4 +58,12 @@ public class UserApiController extends ApiControllerBase {
         userService.changePassword(user, dto.currentPassword(), dto.newPassword());
     }
 
+    @Operation(summary = "Удаление профиля", tags = "user-api")
+    @SuccessResponse("Профиль пользователя удален")
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProfile() throws GenericErrorException {
+        userService.deleteProfile(getCurrentUsername());
+    }
+
 }

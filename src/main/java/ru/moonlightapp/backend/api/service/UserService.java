@@ -1,6 +1,7 @@
 package ru.moonlightapp.backend.api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.exception.ApiException;
@@ -50,6 +51,11 @@ public final class UserService {
         if (updated) {
             userRepository.save(user);
         }
+    }
+
+    public void deleteProfile(String userEmail) {
+        userRepository.deleteById(userEmail);
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 
 }
