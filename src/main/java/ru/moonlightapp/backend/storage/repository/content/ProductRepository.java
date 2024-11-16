@@ -6,12 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import ru.moonlightapp.backend.model.attribute.ProductType;
 import ru.moonlightapp.backend.storage.model.content.Product;
 
+import java.util.Optional;
+
 public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
 
     @Query("select min(p.price) from Product p where p.type = ?1")
-    float findMinPrice(ProductType productType);
+    Optional<Float> findMinPrice(ProductType productType);
 
     @Query("select max(p.price) from Product p where p.type = ?1")
-    float findMaxPrice(ProductType productType);
+    Optional<Float> findMaxPrice(ProductType productType);
 
 }
