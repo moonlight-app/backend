@@ -57,7 +57,7 @@ public final class ProductSpecs {
         return (root, query, builder) -> asBitwiseAnd(builder, root.get(Product_.treasures), treasures);
     }
 
-    private static Predicate asBitwiseAnd(CriteriaBuilder builder, Path<Integer> attributePath, int mask) {
+    public static Predicate asBitwiseAnd(CriteriaBuilder builder, Path<Integer> attributePath, int mask) {
         return builder.notEqual(builder.function("BITAND", Integer.class, attributePath, builder.literal(mask)), 0);
     }
 
