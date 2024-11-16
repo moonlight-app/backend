@@ -1,5 +1,7 @@
 package ru.moonlightapp.backend.api.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,9 +16,8 @@ import ru.moonlightapp.backend.api.model.ProductModel;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.model.attribute.CatalogSorting;
 import ru.moonlightapp.backend.model.attribute.ProductType;
-import ru.moonlightapp.backend.storage.model.content.Product;
+import ru.moonlightapp.backend.storage.model.content.*;
 import ru.moonlightapp.backend.storage.repository.content.ProductRepository;
-import ru.moonlightapp.backend.storage.repository.content.ProductSizeRepository;
 import ru.moonlightapp.backend.storage.specification.ProductSpecs;
 
 import java.util.*;
@@ -28,16 +29,17 @@ public final class CatalogService {
     private static final int POPULAR_SIZES_LIMIT = 10;
     private static final int ITEMS_PER_PAGE = 20;
 
-    private final ProductRepository productRepository;
-    private final ProductSizeRepository productSizeRepository;
-
+    private final EntityManager entityManager;
     private final FavoritesService favoritesService;
 
-    public CategoryMetadataModel constructCategoryMetadata(ProductType productType) {
-        float minPrice = productRepository.findMinPrice(productType);
-        float maxPrice = productRepository.findMaxPrice(productType);
+    private final ProductRepository productRepository;
 
-        float[] popularSizes = productSizeRepository.findPopularSizes(productType.getMoonlightBit(), POPULAR_SIZES_LIMIT);
+    public CategoryMetadataModel constructCategoryMetadata(ProductType productType) {
+        float minPrice = productRepository.findMinPrice(productType).orElse(-1F);
+        float maxPrice = productRepository.findMaxPrice(productType).orElse(-1F);
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        float[] popularSizes = queryPopularSizes(builder, productType.getMoonlightBit(), POPULAR_SIZES_LIMIT);
         Arrays.sort(popularSizes);
 
         return new CategoryMetadataModel(productType, new FloatRangeModel(minPrice, maxPrice), popularSizes);
@@ -92,6 +94,27 @@ public final class CatalogService {
             activeFilters.add(ProductSpecs.hasTreasures(filtersDto.treasures()));
 
         return activeFilters;
+    }
+
+    private float[] queryPopularSizes(CriteriaBuilder builder, int productTypeBit, int limit) {
+        CriteriaQuery<Float> query = builder.createQuery(Float.class);
+
+        Root<ProductSizeMapping> root = query.from(ProductSizeMapping.class);
+        Join<ProductSizeMapping, ProductSize> join = root.join(ProductSizeMapping_.productSize, JoinType.INNER);
+
+        query.select(join.get(ProductSize_.size));
+
+        query.where(ProductSpecs.asBitwiseAnd(builder, join.get(ProductSize_.productTypes), productTypeBit));
+        query.groupBy(join.get(ProductSize_.size));
+        query.orderBy(builder.desc(builder.count(root)));
+
+        List<Float> resultList = entityManager.createQuery(query).setMaxResults(limit).getResultList();
+
+        float[] result = new float[resultList.size()];
+        for (int i = 0; i < resultList.size(); i++)
+            result[i] = resultList.get(i);
+
+        return result;
     }
 
     private static Set<Float> parseSizes(String[] rawSizes) throws ApiException {
