@@ -38,6 +38,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
 
         EmailConfirmation confirmation = EmailConfirmation.builder()
                 .withEmail(email)
+                .withRequestedAt(Instant.now())
                 .withConfirmed(true)
                 .build();
 
