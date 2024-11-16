@@ -43,7 +43,7 @@ public final class EmailConfirmationService {
     ) throws ApiException {
         Optional<EmailConfirmation> existing = emailConfirmationRepository.findById(email);
         if (existing.isPresent()) {
-            if (existing.get().isConfirmed())
+            if (!existing.get().isExpired() && existing.get().isConfirmed())
                 throw new ApiException("email_already_confirmed", "This email is already confirmed");
 
             if (renew) {
