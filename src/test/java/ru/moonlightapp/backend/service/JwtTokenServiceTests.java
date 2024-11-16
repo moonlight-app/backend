@@ -6,10 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.TokenPair;
+import ru.moonlightapp.backend.storage.model.TokenPairId;
 import ru.moonlightapp.backend.storage.repository.TokenPairRepository;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -57,7 +59,7 @@ public final class JwtTokenServiceTests {
                 .withRefreshTokenExpiresAt(Instant.now().minusSeconds(1))
                 .build();
 
-        when(tokenPairRepository.getByBothTokens(accessToken, refreshToken)).thenReturn(tokenPair);
+        when(tokenPairRepository.findById(new TokenPairId(accessToken, refreshToken))).thenReturn(Optional.of(tokenPair));
 
         ApiException exception = assertThrows(
                 ApiException.class,
@@ -75,7 +77,7 @@ public final class JwtTokenServiceTests {
         TokenPair tokenPair = jwtTokenService.createTokenPair(email);
         String accessToken = tokenPair.getAccessToken();
         String refreshToken = tokenPair.getRefreshToken();
-        when(tokenPairRepository.getByBothTokens(accessToken, refreshToken)).thenReturn(tokenPair);
+        when(tokenPairRepository.findById(new TokenPairId(accessToken, refreshToken))).thenReturn(Optional.of(tokenPair));
 
         ApiException exception = assertThrows(
                 ApiException.class,
@@ -93,7 +95,7 @@ public final class JwtTokenServiceTests {
         TokenPair tokenPair = jwtTokenService.createTokenPair(email);
         String accessToken = tokenPair.getAccessToken();
         String refreshToken = tokenPair.getRefreshToken();
-        when(tokenPairRepository.getByBothTokens(accessToken, refreshToken)).thenReturn(tokenPair);
+        when(tokenPairRepository.findById(new TokenPairId(accessToken, refreshToken))).thenReturn(Optional.of(tokenPair));
 
         assertDoesNotThrow(() -> jwtTokenService.refreshTokenPair(accessToken, refreshToken));
 
