@@ -1,5 +1,5 @@
 -- bitwise AND: first & second -> integer
-CREATE OR REPLACE FUNCTION bitwiseAnd(_first INTEGER, _second INTEGER)
+CREATE OR REPLACE FUNCTION BITAND(_first INTEGER, _second INTEGER)
 RETURNS INTEGER
 LANGUAGE plpgsql AS '
     BEGIN

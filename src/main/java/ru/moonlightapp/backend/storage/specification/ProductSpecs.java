@@ -58,7 +58,7 @@ public final class ProductSpecs {
     }
 
     private static Predicate asBitwiseAnd(CriteriaBuilder builder, Path<Integer> attributePath, int mask) {
-        return builder.notEqual(builder.function("bitwiseAnd", Integer.class, attributePath, builder.literal(mask)), 0);
+        return builder.notEqual(builder.function("BITAND", Integer.class, attributePath, builder.literal(mask)), 0);
     }
 
 }

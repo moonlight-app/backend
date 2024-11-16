@@ -8,6 +8,7 @@ out/
 .DS_Store
 spring-shell.log
 test.mv.db
+test.trace.db
 
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties

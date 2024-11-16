@@ -9,3 +9,7 @@ spring:
     properties:
       hibernate:
         dialect: 'ru.moonlightapp.backend.storage.dialect.CustomPostgreSQLDialect'
+
+  sql:
+    init:
+      schema-locations: classpath:scripts/schema-pg.sql
