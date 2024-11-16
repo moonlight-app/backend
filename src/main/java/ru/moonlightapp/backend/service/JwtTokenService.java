@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.TokenPair;
+import ru.moonlightapp.backend.storage.model.TokenPairId;
 import ru.moonlightapp.backend.storage.repository.TokenPairRepository;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
 import ru.moonlightapp.backend.util.CharSequenceGenerator;
@@ -52,22 +53,23 @@ public final class JwtTokenService {
     }
 
     public TokenPair refreshTokenPair(String oldAccessToken, String oldRefreshToken) throws ApiException {
-        TokenPair foundPair = tokenPairRepository.getByBothTokens(oldAccessToken, oldRefreshToken);
-        if (foundPair == null)
+        Optional<TokenPair> foundPair = tokenPairRepository.findById(new TokenPairId(oldAccessToken, oldRefreshToken));
+        if (foundPair.isEmpty())
             throw new ApiException("token_pair_not_found", "A pair of these tokens not found!");
 
-        if (foundPair.isRefreshTokenExpired())
+        TokenPair tokenPair = foundPair.get();
+        if (tokenPair.isRefreshTokenExpired())
             throw new ApiException("token_is_expired", "The refresh token is expired!");
 
-        String userEmail = foundPair.getUserEmail();
+        String userEmail = tokenPair.getUserEmail();
         if (!userRepository.existsById(userEmail))
             throw new ApiException("user_not_found", "The token pair owner doesn't exist!");
 
         Instant[] expirations = generateExpirations();
         return writeUniqueTokenPair(() -> {
-            foundPair.updateAccessToken(this::generateJwtAccessToken, expirations[0]);
-            foundPair.updateRefreshToken(this::generateJwtRefreshToken, expirations[1]);
-            return foundPair;
+            tokenPair.updateAccessToken(this::generateJwtAccessToken, expirations[0]);
+            tokenPair.updateRefreshToken(this::generateJwtRefreshToken, expirations[1]);
+            return tokenPair;
         });
     }
 

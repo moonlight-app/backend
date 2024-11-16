@@ -12,27 +12,25 @@ import java.util.function.BiFunction;
 @Builder(setterPrefix = "with")
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity @Table(name = "token_pairs")
+@Entity @IdClass(TokenPairId.class) @Table(name = "token_pairs")
 public final class TokenPair {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private long id;
-
-    @Column(name = "user_email", nullable = false)
-    private String userEmail;
-
-    @Column(name = "access_token", nullable = false, unique = true, length = 0)
+    @Id
+    @Column(name = "access_token", nullable = false)
     private String accessToken;
+
+    @Id
+    @Column(name = "refresh_token", nullable = false, length = 511)
+    private String refreshToken;
 
     @Column(name = "access_token_expires_at", nullable = false)
     private Instant accessTokenExpiresAt;
 
-    @Column(name = "refresh_token", nullable = false, unique = true, length = 0)
-    private String refreshToken;
-
     @Column(name = "refresh_token_expires_at", nullable = false)
     private Instant refreshTokenExpiresAt;
+
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -88,23 +86,23 @@ public final class TokenPair {
         if (o == null || getClass() != o.getClass()) return false;
 
         TokenPair tokenPair = (TokenPair) o;
-        return id == tokenPair.id && Objects.equals(userEmail, tokenPair.userEmail);
+        return Objects.equals(accessToken, tokenPair.accessToken) &&
+                Objects.equals(refreshToken, tokenPair.refreshToken);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userEmail);
+        return Objects.hash(accessToken, refreshToken);
     }
 
     @Override
     public String toString() {
         return "TokenPair{" +
-                "id=" + id +
-                ", userEmail='" + userEmail + '\'' +
-                ", accessToken='" + (accessToken != null ? "<masked>" : "<not set>") + '\'' +
+                "accessToken='" + (accessToken != null ? "<masked>" : "<not set>") + '\'' +
                 ", accessTokenExpiresAt=" + accessTokenExpiresAt +
                 ", refreshToken='" + (refreshToken != null ? "<masked>" : "<not set>") + '\'' +
                 ", refreshTokenExpiresAt=" + refreshTokenExpiresAt +
+                ", userEmail='" + userEmail + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
