@@ -4,8 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.content.OrderItem;
 import ru.moonlightapp.backend.storage.projection.CartItemProj;
@@ -20,8 +20,7 @@ import java.util.stream.LongStream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public final class OrdersServiceTests {
+public final class OrdersServiceTests extends SpringBootTests {
 
     @MockBean private OrderItemRepository orderItemRepository;
     @MockBean private CartService cartService;

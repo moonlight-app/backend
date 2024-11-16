@@ -2,9 +2,9 @@ package ru.moonlightapp.backend.web.auth.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.User;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
@@ -14,8 +14,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public final class RecoveryServiceTests {
+public final class RecoveryServiceTests extends SpringBootTests {
 
     @MockBean private UserRepository userRepository;
     @MockBean private EmailConfirmationService emailConfirmationService;

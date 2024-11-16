@@ -2,8 +2,8 @@ package ru.moonlightapp.backend.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.TokenPair;
 import ru.moonlightapp.backend.storage.model.TokenPairId;
@@ -16,8 +16,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public final class JwtTokenServiceTests {
+public final class JwtTokenServiceTests extends SpringBootTests {
 
     @MockBean private TokenPairRepository tokenPairRepository;
     @MockBean private UserRepository userRepository;

@@ -2,8 +2,8 @@ package ru.moonlightapp.backend.api.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.storage.model.content.FavoriteItem;
 import ru.moonlightapp.backend.storage.model.content.Product;
@@ -15,8 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
-public final class FavoritesServiceTests {
+public final class FavoritesServiceTests extends SpringBootTests {
 
     @MockBean private FavoriteItemRepository favoriteItemRepository;
     @MockBean private ProductRepository productRepository;

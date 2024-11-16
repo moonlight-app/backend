@@ -2,8 +2,8 @@ package ru.moonlightapp.backend.web.auth.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.service.MailService;
 import ru.moonlightapp.backend.storage.model.auth.EmailConfirmation;
@@ -18,8 +18,7 @@ import static org.mockito.Mockito.*;
 import static ru.moonlightapp.backend.web.auth.service.EmailConfirmationService.REQUEST_CAN_BE_RENEWED_IN;
 import static ru.moonlightapp.backend.web.auth.service.EmailConfirmationService.REQUEST_WILL_BE_EXPIRED_IN;
 
-@SpringBootTest
-public final class EmailConfirmationServiceTests {
+public final class EmailConfirmationServiceTests extends SpringBootTests {
 
     @MockBean private EmailConfirmationRepository emailConfirmationRepository;
     @MockBean private MailService mailService;
