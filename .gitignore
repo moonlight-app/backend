@@ -9,6 +9,7 @@ out/
 spring-shell.log
 test.mv.db
 test.trace.db
+dump.zip
 
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
