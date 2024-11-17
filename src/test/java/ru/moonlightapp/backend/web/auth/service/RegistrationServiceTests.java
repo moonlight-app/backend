@@ -62,13 +62,6 @@ public final class RegistrationServiceTests extends SpringBootTests {
     }
 
     @Test
-    void whenConfirmWithNotKnownBeforeEmail_thenSuccess() throws ApiException {
-        String email = "test@test.com";
-        assertDoesNotThrow(() -> registrationService.processEmailConfirmation(email, "", ""));
-        verify(emailConfirmationService, times(1)).processEmailConfirmation(anyString(), anyString(), anyString());
-    }
-
-    @Test
     void whenRegisterWithNotKnownBeforeEmail_thenSuccess() throws ApiException {
         String email = "test@test.com";
 
