@@ -13,10 +13,10 @@ public record ProductModel(
         @JsonProperty("name") String name,
         @JsonProperty("price") float price,
         @JsonProperty("sizes") String[] sizes,
-        @JsonProperty("materials") int materials,
+        @JsonProperty("materials") Integer materials,
         @JsonProperty("sample") String sample,
         @JsonProperty("sample_type") String sampleType,
-        @JsonProperty("treasures") int treasures,
+        @JsonProperty("treasures") Integer treasures,
         @JsonProperty("weight") Float weight,
         @JsonProperty("preview_url") String previewUrl,
         @JsonProperty("description") String description

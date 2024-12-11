@@ -36,8 +36,8 @@ public final class Product {
     @Column(name = "audiences")
     private Integer audiences;
 
-    @Column(name = "materials", nullable = false)
-    private int materials;
+    @Column(name = "materials")
+    private Integer materials;
 
     @Column(name = "sample", length = 10)
     private String sample;
@@ -45,8 +45,8 @@ public final class Product {
     @Column(name = "sample_type", length = 30)
     private String sampleType;
 
-    @Column(name = "treasures", nullable = false)
-    private int treasures;
+    @Column(name = "treasures")
+    private Integer treasures;
 
     @Column(name = "weight")
     private Float weight;
