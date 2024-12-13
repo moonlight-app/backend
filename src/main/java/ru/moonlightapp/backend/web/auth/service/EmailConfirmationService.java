@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.moonlightapp.backend.exception.ApiException;
-import ru.moonlightapp.backend.service.MailService;
+import ru.moonlightapp.backend.service.AsyncMailServiceDecorator;
 import ru.moonlightapp.backend.storage.model.auth.EmailConfirmation;
 import ru.moonlightapp.backend.storage.repository.auth.EmailConfirmationRepository;
 import ru.moonlightapp.backend.util.CharSequenceGenerator;
@@ -30,7 +30,7 @@ public final class EmailConfirmationService {
     public static final long REQUEST_CAN_BE_RENEWED_IN = 180L;
 
     private final EmailConfirmationRepository emailConfirmationRepository;
-    private final MailService mailService;
+    private final AsyncMailServiceDecorator mailService;
 
     public void requestEmailConfirmation(
             String email,
@@ -74,7 +74,7 @@ public final class EmailConfirmationService {
                 .replace("{{user}}", userName)
                 .replace("{{subtitle}}", mailSubtitle);
 
-        mailService.sendMailAsync(email, mailTitle, mailContentFormatter.formatContent(code.toUpperCase()), html);
+        mailService.sendMail(email, mailTitle, mailContentFormatter.formatContent(code.toUpperCase()), html);
 
         String proofKey = CharSequenceGenerator.generateProofKey();
         EmailConfirmation confirmation = existing.orElseGet(() -> new EmailConfirmation(email));
