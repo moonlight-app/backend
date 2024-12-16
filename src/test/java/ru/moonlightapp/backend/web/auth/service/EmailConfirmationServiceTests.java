@@ -1,15 +1,17 @@
 package ru.moonlightapp.backend.web.auth.service;
 
+import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
-import ru.moonlightapp.backend.service.MailService;
+import ru.moonlightapp.backend.service.AsyncMailServiceDecorator;
 import ru.moonlightapp.backend.storage.model.auth.EmailConfirmation;
 import ru.moonlightapp.backend.storage.repository.auth.EmailConfirmationRepository;
 import ru.moonlightapp.backend.util.CharSequenceGenerator;
 
+import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -21,7 +23,7 @@ import static ru.moonlightapp.backend.web.auth.service.EmailConfirmationService.
 public final class EmailConfirmationServiceTests extends SpringBootTests {
 
     @MockBean private EmailConfirmationRepository emailConfirmationRepository;
-    @MockBean private MailService mailService;
+    @MockBean private AsyncMailServiceDecorator mailService;
 
     @Autowired private EmailConfirmationService emailConfirmationService;
 
@@ -51,7 +53,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 )
         );
 
-        assertEquals(exception.getErrorCode(), "email_already_confirmed");
+        assertEquals("email_already_confirmed", exception.getErrorCode());
     }
 
     @Test
@@ -72,7 +74,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 )
         );
 
-        assertEquals(exception.getErrorCode(), "email_confirmation_unrenewable");
+        assertEquals("email_confirmation_unrenewable", exception.getErrorCode());
     }
 
     @Test
@@ -93,11 +95,11 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 )
         );
 
-        assertEquals(exception.getErrorCode(), "email_confirmation_pending");
+        assertEquals("email_confirmation_pending", exception.getErrorCode());
     }
 
     @Test
-    void whenRequestWithRenewableConfirmation_thenShouldBeRenewed() {
+    void whenRequestWithRenewableConfirmation_thenShouldBeRenewed() throws MessagingException, UnsupportedEncodingException {
         String email = "test@test.com";
 
         EmailConfirmation confirmation = EmailConfirmation.builder()
@@ -111,18 +113,18 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 email, true, "title", "subtitle", "username", code -> code, proofKey -> {}
         ));
 
-        verify(mailService, times(1)).sendMailAsync(anyString(), anyString(), anyString(), anyString());
+        verify(mailService, times(1)).sendMail(anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
-    void whenRequestWithNotKnownBeforeEmail_thenSuccess() {
+    void whenRequestWithNotKnownBeforeEmail_thenSuccess() throws MessagingException, UnsupportedEncodingException {
         String email = "test@test.com";
 
         assertDoesNotThrow(() -> emailConfirmationService.requestEmailConfirmation(
                 email, false, "title", "subtitle", "username", code -> code, proofKey -> {}
         ));
 
-        verify(mailService, times(1)).sendMailAsync(anyString(), anyString(), anyString(), anyString());
+        verify(mailService, times(1)).sendMail(anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
@@ -134,7 +136,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.processEmailConfirmation(email, null, null)
         );
 
-        assertEquals(exception.getErrorCode(), "request_not_found");
+        assertEquals("request_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -153,7 +155,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.processEmailConfirmation(email, null, null)
         );
 
-        assertEquals(exception.getErrorCode(), "request_expired");
+        assertEquals("request_expired", exception.getErrorCode());
     }
 
     @Test
@@ -174,7 +176,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.processEmailConfirmation(email, null, "not-" + proofKey)
         );
 
-        assertEquals(exception.getErrorCode(), "wrong_proof_key");
+        assertEquals("wrong_proof_key", exception.getErrorCode());
     }
 
     @Test
@@ -196,7 +198,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.processEmailConfirmation(email, null, proofKey)
         );
 
-        assertEquals(exception.getErrorCode(), "no_more_attempts");
+        assertEquals("no_more_attempts", exception.getErrorCode());
     }
 
     @Test
@@ -215,7 +217,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.processEmailConfirmation(email, "not-" + code, proofKey)
         );
 
-        assertEquals(exception.getErrorCode(), "wrong_code");
+        assertEquals("wrong_code", exception.getErrorCode());
     }
 
     @Test
@@ -243,7 +245,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.validateEmailConfirmation(email, null)
         );
 
-        assertEquals(exception.getErrorCode(), "email_not_confirmed");
+        assertEquals("email_not_confirmed", exception.getErrorCode());
     }
 
     @Test
@@ -259,7 +261,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.validateEmailConfirmation(email, null)
         );
 
-        assertEquals(exception.getErrorCode(), "email_not_confirmed");
+        assertEquals("email_not_confirmed", exception.getErrorCode());
     }
 
     @Test
@@ -280,7 +282,7 @@ public final class EmailConfirmationServiceTests extends SpringBootTests {
                 () -> emailConfirmationService.validateEmailConfirmation(email, "not-" + proofKey)
         );
 
-        assertEquals(exception.getErrorCode(), "wrong_proof_key");
+        assertEquals("wrong_proof_key", exception.getErrorCode());
     }
 
     @Test
