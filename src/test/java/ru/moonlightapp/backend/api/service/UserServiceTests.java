@@ -45,7 +45,7 @@ public final class UserServiceTests extends SpringBootTests {
                 () -> userService.changePassword(user, "not-" + currentPassword, null)
         );
 
-        assertEquals(exception.getErrorCode(), "wrong_password");
+        assertEquals("wrong_password", exception.getErrorCode());
     }
 
     @Test
@@ -79,7 +79,7 @@ public final class UserServiceTests extends SpringBootTests {
 
         verify(userRepository, never()).save(any(User.class));
 
-        assertEquals(user.getName(), name);
+        assertEquals(name, user.getName());
         assertNull(user.getBirthDate());
         assertNull(user.getSex());
     }
@@ -97,9 +97,9 @@ public final class UserServiceTests extends SpringBootTests {
 
         verify(userRepository, times(1)).save(any(User.class));
 
-        assertEquals(user.getName(), name);
+        assertEquals(name, user.getName());
         assertNull(user.getBirthDate());
-        assertEquals(user.getSex(), Sex.FEMALE);
+        assertEquals(Sex.FEMALE, user.getSex());
     }
 
     @Test
@@ -115,9 +115,9 @@ public final class UserServiceTests extends SpringBootTests {
 
         verify(userRepository, times(1)).save(any(User.class));
 
-        assertEquals(user.getName(), name);
+        assertEquals(name, user.getName());
         assertEquals(user.getBirthDate(), LocalDate.of(2022, 3, 26));
-        assertEquals(user.getSex(), Sex.FEMALE);
+        assertEquals(Sex.FEMALE, user.getSex());
     }
 
     @Test
@@ -134,9 +134,9 @@ public final class UserServiceTests extends SpringBootTests {
 
         verify(userRepository, never()).save(any(User.class));
 
-        assertEquals(user.getName(), name);
+        assertEquals(name, user.getName());
         assertEquals(user.getBirthDate(), LocalDate.of(2022, 3, 26));
-        assertEquals(user.getSex(), Sex.FEMALE);
+        assertEquals(Sex.FEMALE, user.getSex());
     }
 
     @Test
@@ -153,7 +153,7 @@ public final class UserServiceTests extends SpringBootTests {
 
         verify(userRepository, times(1)).save(any(User.class));
 
-        assertEquals(user.getName(), name);
+        assertEquals(name, user.getName());
         assertEquals(user.getBirthDate(), LocalDate.of(2022, 3, 26));
         assertNull(user.getSex());
     }

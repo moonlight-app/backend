@@ -39,7 +39,7 @@ public final class RecoveryServiceTests extends SpringBootTests {
                 () -> recoveryService.processConfirmationRequest(email, true, proofKey -> {})
         );
 
-        assertEquals(exception.getErrorCode(), "user_not_found");
+        assertEquals("user_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -71,7 +71,7 @@ public final class RecoveryServiceTests extends SpringBootTests {
                 () -> recoveryService.processEmailConfirmation(email, "", "")
         );
 
-        assertEquals(exception.getErrorCode(), "user_not_found");
+        assertEquals("user_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -93,7 +93,7 @@ public final class RecoveryServiceTests extends SpringBootTests {
                 () -> recoveryService.performRecovery(email, "", "")
         );
 
-        assertEquals(exception.getErrorCode(), "user_not_found");
+        assertEquals("user_not_found", exception.getErrorCode());
     }
 
     @Test

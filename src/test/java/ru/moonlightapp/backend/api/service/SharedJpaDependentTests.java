@@ -33,20 +33,20 @@ public final class SharedJpaDependentTests extends SpringBootTests {
     void whenFindCartItems_thenSuccess() {
         Page<CartItemModel> page = assertDoesNotThrow(() -> cartService.findItems("test@test.com", 1));
 
-        assertEquals(page.getTotalElements(), 9);
+        assertEquals(9, page.getTotalElements());
         assertTrue(page.getContent().get(2).isFavorite());
-        assertEquals(page.getContent().get(3).productId(), 20);
-        assertEquals(page.getContent().get(6).price(), 1490F);
+        assertEquals(20, page.getContent().get(3).productId());
+        assertEquals(1490F, page.getContent().get(6).price());
     }
 
     @Test
     void whenConstructCategoryMetadataForRings_thenSuccess() {
         CategoryMetadataModel model = assertDoesNotThrow(() -> catalogService.constructCategoryMetadata(ProductType.RING));
 
-        assertEquals(model.priceRange().min(), 708F);
-        assertEquals(model.priceRange().max(), 199990F);
-        assertEquals(model.popularSizes().length, 10);
-        assertEquals(model.popularSizes()[3], 17F);
+        assertEquals(708F, model.priceRange().min());
+        assertEquals(199990F, model.priceRange().max());
+        assertEquals(10, model.popularSizes().length);
+        assertEquals(17F, model.popularSizes()[3]);
     }
 
     @Test
@@ -63,25 +63,25 @@ public final class SharedJpaDependentTests extends SpringBootTests {
                 null
         ));
 
-        assertEquals(page.getTotalElements(), 1L);
-        assertEquals(page.getContent().getFirst().id(), 197);
+        assertEquals(1L, page.getTotalElements());
+        assertEquals(197, page.getContent().getFirst().id());
     }
 
     @Test
     void whenFindFavoriteItems_thenSuccess() {
         Page<FavoriteItemModel> page = assertDoesNotThrow(() -> favoritesService.findItems("test2@test.com", 1));
 
-        assertEquals(page.getTotalElements(), 2);
-        assertEquals(page.getContent().getFirst().productId(), 52);
-        assertEquals(page.getContent().getLast().price(), 2190F);
+        assertEquals(2, page.getTotalElements());
+        assertEquals(52, page.getContent().getFirst().productId());
+        assertEquals(2190F, page.getContent().getLast().price());
     }
 
     @Test
     void whenFindOrderItems_thenSuccess() {
         Page<OrderItemModel> page = assertDoesNotThrow(() -> ordersService.findItems("test@test.com", 1));
 
-        assertEquals(page.getTotalElements(), 1);
-        assertEquals(page.getContent().getFirst().size(), "40-45");
+        assertEquals(1, page.getTotalElements());
+        assertEquals("40-45", page.getContent().getFirst().size());
     }
 
 }

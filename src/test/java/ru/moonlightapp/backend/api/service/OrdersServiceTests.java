@@ -47,7 +47,7 @@ public final class OrdersServiceTests extends SpringBootTests {
                 () -> ordersService.addItems(email, rawCartItemIds)
         );
 
-        assertEquals(exception.getErrorCode(), "too_much_cart_items");
+        assertEquals("too_much_cart_items", exception.getErrorCode());
     }
 
     @Test
@@ -64,7 +64,7 @@ public final class OrdersServiceTests extends SpringBootTests {
                 () -> ordersService.addItems(email, finalRawCartItemIds)
         );
 
-        assertEquals(exception.getErrorCode(), "bad_cart_items");
+        assertEquals("bad_cart_items", exception.getErrorCode());
     }
 
     @Test
@@ -87,7 +87,7 @@ public final class OrdersServiceTests extends SpringBootTests {
                 () -> ordersService.addItems(email, rawCartItemIds)
         );
 
-        assertEquals(exception.getErrorCode(), "missing_data");
+        assertEquals("missing_data", exception.getErrorCode());
     }
 
     @Test

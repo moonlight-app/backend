@@ -58,7 +58,7 @@ public final class RegistrationServiceTests extends SpringBootTests {
                 () -> registrationService.processConfirmationRequest(email, name, true, proofKey -> {})
         );
 
-        assertEquals(exception.getErrorCode(), "email_already_used");
+        assertEquals("email_already_used", exception.getErrorCode());
     }
 
     @Test
@@ -88,7 +88,7 @@ public final class RegistrationServiceTests extends SpringBootTests {
                 () -> registrationService.registerNewUser(email, "", "", "", LocalDate.now(), Sex.MALE)
         );
 
-        assertEquals(exception.getErrorCode(), "user_already_exists");
+        assertEquals("user_already_exists", exception.getErrorCode());
     }
 
 }

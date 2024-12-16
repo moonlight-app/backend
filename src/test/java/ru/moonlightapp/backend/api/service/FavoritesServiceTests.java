@@ -38,7 +38,7 @@ public final class FavoritesServiceTests extends SpringBootTests {
                 () -> favoritesService.addItem(email, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "product_not_found");
+        assertEquals("product_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -57,7 +57,7 @@ public final class FavoritesServiceTests extends SpringBootTests {
                 () -> favoritesService.addItem(email, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "favorite_item_already_exists");
+        assertEquals("favorite_item_already_exists", exception.getErrorCode());
     }
 
     @Test
@@ -87,7 +87,7 @@ public final class FavoritesServiceTests extends SpringBootTests {
                 () -> favoritesService.removeItem(email, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "favorite_item_not_found");
+        assertEquals("favorite_item_not_found", exception.getErrorCode());
     }
 
     @Test

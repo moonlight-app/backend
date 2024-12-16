@@ -40,7 +40,7 @@ public final class CartServiceTests extends SpringBootTests {
                 () -> cartService.addItem(email, 1, null, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "product_not_found");
+        assertEquals("product_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -59,7 +59,7 @@ public final class CartServiceTests extends SpringBootTests {
                 () -> cartService.addItem(email, 1, null, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "product_size_required");
+        assertEquals("product_size_required", exception.getErrorCode());
     }
 
     @Test
@@ -78,7 +78,7 @@ public final class CartServiceTests extends SpringBootTests {
                 () -> cartService.addItem(email, 1, "14", 1)
         );
 
-        assertEquals(exception.getErrorCode(), "product_size_not_found");
+        assertEquals("product_size_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -127,7 +127,7 @@ public final class CartServiceTests extends SpringBootTests {
                 () -> cartService.changeCount(email, 1, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "cart_item_not_found");
+        assertEquals("cart_item_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -169,7 +169,7 @@ public final class CartServiceTests extends SpringBootTests {
                 () -> cartService.removeItem(email, 1)
         );
 
-        assertEquals(exception.getErrorCode(), "cart_item_not_found");
+        assertEquals("cart_item_not_found", exception.getErrorCode());
     }
 
     @Test

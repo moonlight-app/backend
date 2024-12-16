@@ -44,7 +44,7 @@ public final class JwtTokenServiceTests extends SpringBootTests {
                 () -> jwtTokenService.refreshTokenPair("no token", "no token")
         );
 
-        assertEquals(exception.getErrorCode(), "token_pair_not_found");
+        assertEquals("token_pair_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -65,7 +65,7 @@ public final class JwtTokenServiceTests extends SpringBootTests {
                 () -> jwtTokenService.refreshTokenPair(accessToken, refreshToken)
         );
 
-        assertEquals(exception.getErrorCode(), "token_is_expired");
+        assertEquals("token_is_expired", exception.getErrorCode());
     }
 
     @Test
@@ -83,7 +83,7 @@ public final class JwtTokenServiceTests extends SpringBootTests {
                 () -> jwtTokenService.refreshTokenPair(accessToken, refreshToken)
         );
 
-        assertEquals(exception.getErrorCode(), "user_not_found");
+        assertEquals("user_not_found", exception.getErrorCode());
     }
 
     @Test
@@ -108,7 +108,7 @@ public final class JwtTokenServiceTests extends SpringBootTests {
                 () -> jwtTokenService.validateAccessToken("")
         );
 
-        assertEquals(exception.getErrorCode(), "access_denied");
+        assertEquals("access_denied", exception.getErrorCode());
     }
 
     @Test
@@ -121,7 +121,7 @@ public final class JwtTokenServiceTests extends SpringBootTests {
                 () -> jwtTokenService.validateAccessToken(accessToken)
         );
 
-        assertEquals(exception.getErrorCode(), "token_is_expired");
+        assertEquals("token_is_expired", exception.getErrorCode());
     }
 
     @Test
@@ -142,7 +142,7 @@ public final class JwtTokenServiceTests extends SpringBootTests {
                 () -> jwtTokenService.validateAccessToken(accessToken)
         );
 
-        assertEquals(exception.getErrorCode(), "token_is_expired");
+        assertEquals("token_is_expired", exception.getErrorCode());
     }
 
     @Test
