@@ -2,6 +2,7 @@ package ru.moonlightapp.backend.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.moonlightapp.backend.web.converter.CatalogSortingConverter;
@@ -10,6 +11,7 @@ import ru.moonlightapp.backend.web.converter.SexConverter;
 
 @Configuration
 @RequiredArgsConstructor
+@Profile("test")
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final CatalogSortingConverter catalogSortingConverter;
