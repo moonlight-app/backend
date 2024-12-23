@@ -70,7 +70,6 @@ public class SecurityConfig {
                         .failureHandler(authenticationHandler)
                         .usernameParameter("email")
                         .passwordParameter("password"))
-                .addFilterBefore(jwtTokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout
                         .deleteCookies(sessionCookieName)
                         .logoutUrl("/auth/logout"))
@@ -81,6 +80,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain addJwtAuthenticationMethod(HttpSecurity http) throws Exception {
         return http
+                .addFilterBefore(jwtTokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
