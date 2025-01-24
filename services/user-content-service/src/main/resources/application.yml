@@ -1,0 +1,35 @@
+server:
+  port: ${APPLICATION_PORT}
+
+spring:
+  application:
+    name: 'user-content-service'
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:./test
+
+  jackson:
+    locale: en_US
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: 'ru.moonlightapp.backend.core.storage.dialect.CustomH2Dialect'
+
+    open-in-view: false
+
+  main:
+    banner-mode: off
+
+  profiles:
+    active: ${ACTIVE_PROFILES}
+
+  sql:
+    init:
+      mode: always
+
+  web:
+    locale: en_US

@@ -1,0 +1,22 @@
+server:
+  port: ${APPLICATION_PORT}
+
+spring:
+  application:
+    name: 'discovery-service'
+
+  main:
+    banner-mode: off
+
+  profiles:
+    active: ${ACTIVE_PROFILES}
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+logging:
+  level:
+    com.netflix.eureka: OFF
+    com.netflix.discovery: OFF

@@ -2,11 +2,13 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     java
-    id("org.springframework.boot") version "3.3.5"
-    id("io.spring.dependency-management") version "1.1.6"
+    alias(libs.plugins.springframework.boot)
+    alias(libs.plugins.spring.dependency.management)
 }
 
-group = "ru.moonlight"
+val springCloudVersion by extra("2024.0.0")
+
+group = "ru.moonlightapp.backend"
 version = "0.0.1"
 
 java {
@@ -26,27 +28,38 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-mail")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation(libs.springframework.spring.boot.starter.data.jpa)
+    implementation(libs.springframework.spring.boot.starter.mail)
+    implementation(libs.springframework.spring.boot.starter.security)
+    implementation(libs.springframework.spring.boot.starter.validation)
+    implementation(libs.springframework.spring.boot.starter.web)
 
-    implementation(libs.commonsIo)
-    implementation(libs.jjwtImpl)
-    implementation(libs.jjwtJackson)
-    implementation(libs.springdocOpenapi)
+    implementation(libs.springframework.cloud.spring.cloud.starter.circuitbreaker)
+    implementation(libs.springframework.cloud.spring.cloud.starter.gateway)
+    implementation(libs.springframework.cloud.spring.cloud.starter.netflix.eureka.client)
+    implementation(libs.springframework.cloud.spring.cloud.starter.netflix.eureka.server)
 
-    annotationProcessor(libs.jpaModelgen)
+    implementation(libs.commons.io)
+    implementation(libs.jjwt.impl)
+    implementation(libs.jjwt.jackson)
+    implementation(libs.springdoc.openapi)
 
-    runtimeOnly("com.h2database:h2")
-    runtimeOnly("org.postgresql:postgresql")
+    annotationProcessor(libs.hibernate.jpamodelgen)
 
-    compileOnly("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly(libs.h2database.h2)
+    runtimeOnly(libs.postgresql.postgresql)
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
+
+    testImplementation(libs.springframework.spring.boot.starter.test)
+    testRuntimeOnly(libs.junit.platform.junit.platform.launcher)
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+    }
 }
 
 tasks.getByName<BootJar>("bootJar") {

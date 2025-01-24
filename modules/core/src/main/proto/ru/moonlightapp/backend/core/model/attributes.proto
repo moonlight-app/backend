@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package ru.moonlightapp.backend.core.model;
+
+option java_package = 'ru.moonlightapp.backend.core.protobuf.model.attribute';
+option java_multiple_files = true;
+
+enum ProtoAudience {
+  AUDIENCE_UNKNOWN = 0;
+  AUDIENCE_MEN = 1;
+  AUDIENCE_WOMEN = 2;
+  AUDIENCE_CHILDREN = 3;
+  AUDIENCE_UNISEX = 4;
+}
+
+enum ProtoCatalogSorting {
+  CATALOG_SORTING_UNKNOWN = 0;
+  CATALOG_SORTING_POPULARITY = 1;
+  CATALOG_SORTING_PRICE_ASC = 2;
+  CATALOG_SORTING_PRICE_DESC = 3;
+}
+
+enum ProtoMaterial {
+  MATERIAL_UNKNOWN = 0;
+  MATERIAL_GOLD = 1;
+  MATERIAL_SILVER = 2;
+  MATERIAL_PLATINUM = 3;
+  MATERIAL_WHITE_GOLD = 4;
+  MATERIAL_PINK_GOLD = 5;
+  MATERIAL_CERAMICS = 6;
+}
+
+enum ProtoOrderStatus {
+  ORDER_STATUS_UNKNOWN = 0;
+  ORDER_STATUS_IN_DELIVERY = 1;
+  ORDER_STATUS_CLOSED = 2;
+}
+
+enum ProtoProductType {
+  PRODUCT_TYPE_UNKNOWN = 0;
+  PRODUCT_TYPE_RING = 1;
+  PRODUCT_TYPE_BRACELET = 2;
+  PRODUCT_TYPE_CHAIN = 3;
+  PRODUCT_TYPE_WATCH = 4;
+  PRODUCT_TYPE_EARRINGS = 5;
+  PRODUCT_TYPE_NECKLACE = 6;
+}
+
+enum ProtoSex {
+  SEX_UNKNOWN = 0;
+  SEX_FEMALE = 1;
+  SEX_MALE = 2;
+}
+
+enum ProtoTreasure {
+  TREASURE_UNKNOWN = 0;
+  TREASURE_NOTHING = 1;
+  TREASURE_DIAMOND = 2;
+  TREASURE_SAPPHIRE = 3;
+  TREASURE_PEARL = 4;
+  TREASURE_AMETHYST = 5;
+  TREASURE_FIANIT = 6;
+  TREASURE_EMERALD = 7;
+  TREASURE_RUBY = 8;
+}

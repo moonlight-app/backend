@@ -6,7 +6,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
-import ru.moonlightapp.backend.model.attribute.Sex;
+import ru.moonlightapp.backend.core.model.attribute.Sex;
 import ru.moonlightapp.backend.storage.model.User;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
 

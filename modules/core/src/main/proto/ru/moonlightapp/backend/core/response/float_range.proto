@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package ru.moonlightapp.backend.core.model;
+
+option java_package = 'ru.moonlightapp.backend.core.protobuf.model';
+
+message ProtoFloatRange {
+  float min = 1;
+  float max = 2;
+}

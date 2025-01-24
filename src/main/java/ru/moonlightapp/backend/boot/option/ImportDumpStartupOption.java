@@ -2,7 +2,6 @@ package ru.moonlightapp.backend.boot.option;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ru.moonlightapp.backend.util.DumpImporter;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,0 +1,16 @@
+server:
+  port: ${APPLICATION_PORT}
+
+spring:
+  application:
+    name: 'api-gateway'
+
+  main:
+    banner-mode: off
+
+  profiles:
+    active: ${ACTIVE_PROFILES}
+
+eureka:
+  client:
+    register-with-eureka: false

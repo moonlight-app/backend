@@ -8,9 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.jdbc.Sql;
 import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.api.dto.CatalogFiltersDto;
-import ru.moonlightapp.backend.api.model.*;
-import ru.moonlightapp.backend.model.attribute.CatalogSorting;
-import ru.moonlightapp.backend.model.attribute.ProductType;
+import ru.moonlightapp.backend.core.model.attribute.CatalogSorting;
+import ru.moonlightapp.backend.core.model.attribute.ProductType;
 
 import static org.junit.jupiter.api.Assertions.*;
 

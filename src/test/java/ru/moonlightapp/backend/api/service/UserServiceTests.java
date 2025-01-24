@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.moonlightapp.backend.SpringBootTests;
 import ru.moonlightapp.backend.exception.ApiException;
 import ru.moonlightapp.backend.exception.GenericErrorException;
-import ru.moonlightapp.backend.model.attribute.Sex;
+import ru.moonlightapp.backend.core.model.attribute.Sex;
 import ru.moonlightapp.backend.storage.model.User;
 import ru.moonlightapp.backend.storage.repository.UserRepository;
 import ru.moonlightapp.backend.util.CharSequenceGenerator;

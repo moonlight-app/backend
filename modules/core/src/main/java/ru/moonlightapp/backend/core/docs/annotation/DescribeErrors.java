@@ -1,0 +1,12 @@
+package ru.moonlightapp.backend.core.docs.annotation;
+
+import java.lang.annotation.*;
+
+@Inherited
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DescribeErrors {
+
+    DescribeError[] value() default {};
+
+}

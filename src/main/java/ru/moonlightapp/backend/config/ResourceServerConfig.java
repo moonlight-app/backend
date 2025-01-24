@@ -7,9 +7,9 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ru.moonlightapp.backend.web.converter.CatalogSortingConverter;
-import ru.moonlightapp.backend.web.converter.ProductTypeConverter;
-import ru.moonlightapp.backend.web.converter.SexConverter;
+import ru.moonlightapp.backend.core.web.converter.CatalogSortingConverter;
+import ru.moonlightapp.backend.core.web.converter.ProductTypeConverter;
+import ru.moonlightapp.backend.core.web.converter.SexConverter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,11 +25,6 @@ public class ResourceServerConfig implements WebMvcConfigurer {
         registry.addConverter(catalogSortingConverter);
         registry.addConverter(productTypeConverter);
         registry.addConverter(sexConverter);
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/image/**").addResourceLocations("classpath:/static/image/").setCacheControl(CacheControl.empty());
     }
 
 }
