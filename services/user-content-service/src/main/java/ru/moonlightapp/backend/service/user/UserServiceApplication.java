@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = "ru.moonlightapp.backend.core")
-@EntityScan(basePackages = "ru.moonlightapp.backend.core.storage.model")
-@EnableJpaRepositories(basePackages = "ru.moonlightapp.backend.core.storage.repository")
+@SpringBootApplication
+@EntityScan(basePackages = {"ru.moonlightapp.backend.core.storage.model", "ru.moonlightapp.backend.service.user.storage.model"})
+@EnableJpaRepositories(basePackages = {"ru.moonlightapp.backend.core.storage.repository", "ru.moonlightapp.backend.service.user.storage.repository"})
 public class UserServiceApplication {
 
     public static void main(String[] args) {

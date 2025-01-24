@@ -11,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
@@ -27,6 +29,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import ru.moonlightapp.backend.core.storage.repository.UserRepository;
 import ru.moonlightapp.backend.service.auth.MoonlightAuthenticationDetailsSource;
 import ru.moonlightapp.backend.service.auth.MoonlightAuthenticationHandler;
+import ru.moonlightapp.backend.service.auth.MoonlightUserDetailsService;
 import ru.moonlightapp.backend.service.auth.service.jwt.JwtTokenAuthorizationFilter;
 import ru.moonlightapp.backend.service.auth.service.jwt.JwtTokenService;
 
@@ -46,7 +49,8 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http
+        DefaultSecurityFilterChain filterChain = http
+                .addFilterBefore(jwtTokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/swagger-ui/**", "/docs/openapi").permitAll()
                         .requestMatchers("/auth/token/validate").authenticated()
@@ -68,20 +72,13 @@ public class SecurityConfig {
                         .deleteCookies(sessionCookieName)
                         .logoutUrl("/auth/logout"))
                 .build();
+
+        return enforceCustomAuthenticationDetailsSource(filterChain);
     }
 
     @Bean
-    @Order(2)
-    public SecurityFilterChain addJwtAuthenticationMethod(HttpSecurity http) throws Exception {
-        return http
-                .addFilterBefore(jwtTokenAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
-
-    @Bean
-    @Order(3)
-    public SecurityFilterChain fixNginxReverseProxyRealIPsIssue(HttpSecurity http) throws Exception {
-        return enforceCustomAuthenticationDetailsSource(http.build());
+    public UserDetailsService userDetailsService() {
+        return new MoonlightUserDetailsService(userRepository);
     }
 
     @Bean

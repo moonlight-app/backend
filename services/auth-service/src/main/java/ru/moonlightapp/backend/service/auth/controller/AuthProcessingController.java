@@ -142,4 +142,9 @@ public final class AuthProcessingController {
         jwtTokenService.validateAccessToken(accessToken);
     }
 
+    @GetMapping(value = "/with-token")
+    public String authorizeWithToken(@RequestHeader("X-Access-Token") String accessToken) throws ApiException {
+        return jwtTokenService.authorizeWithToken(accessToken);
+    }
+
 }

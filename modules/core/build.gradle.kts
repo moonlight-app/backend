@@ -21,8 +21,8 @@ dependencies {
     implementation(libs.springframework.security.spring.security.core)
     implementation(libs.hibernate.orm.hibernate.core)
 
-    api(libs.devh.grpc.client.spring.boot.starter)
-    api(libs.devh.grpc.server.spring.boot.starter)
+//    api(libs.devh.grpc.client.spring.boot.starter)
+//    api(libs.devh.grpc.server.spring.boot.starter)
     api(libs.grpc.all)
     api(libs.google.protobuf.java)
     api(libs.javax.annotation)

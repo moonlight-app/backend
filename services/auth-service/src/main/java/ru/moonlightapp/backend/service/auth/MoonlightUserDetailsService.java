@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ru.moonlightapp.backend.service.user.storage.repository.UserRepository;
+import ru.moonlightapp.backend.core.storage.repository.UserRepository;
 
 @RequiredArgsConstructor
 public final class MoonlightUserDetailsService implements UserDetailsService {

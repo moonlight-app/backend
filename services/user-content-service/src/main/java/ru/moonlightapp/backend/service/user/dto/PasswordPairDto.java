@@ -1,4 +1,4 @@
-package ru.moonlightapp.backend.api.dto;
+package ru.moonlightapp.backend.service.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

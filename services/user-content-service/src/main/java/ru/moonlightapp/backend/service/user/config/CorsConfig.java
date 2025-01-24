@@ -1,6 +1,5 @@
 package ru.moonlightapp.backend.service.user.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -12,9 +11,6 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfig {
 
-    @Value("${server.cors.allowed-origin}")
-    private String corsAllowedOrigin;
-
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public CorsFilter corsFilter() {
@@ -23,10 +19,10 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
 
-        config.addAllowedOrigin(corsAllowedOrigin);
+        config.addAllowedOrigin("*");
         config.addAllowedHeader(CorsConfiguration.ALL);
-        config.addExposedHeader(CorsConfiguration.ALL);
         config.addAllowedMethod(CorsConfiguration.ALL);
+        config.addExposedHeader(CorsConfiguration.ALL);
 
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);

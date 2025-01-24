@@ -17,9 +17,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import ru.moonlightapp.backend.core.model.ErrorModel;
+import ru.moonlightapp.backend.core.storage.model.TokenPair;
 import ru.moonlightapp.backend.service.auth.model.TokenPairModel;
 import ru.moonlightapp.backend.service.auth.service.jwt.JwtTokenService;
-import ru.moonlightapp.backend.service.auth.storage.model.TokenPair;
 
 import java.io.IOException;
 

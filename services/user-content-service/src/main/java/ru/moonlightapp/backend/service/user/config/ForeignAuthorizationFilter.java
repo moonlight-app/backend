@@ -29,10 +29,10 @@ public final class ForeignAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> foundAccessToken = tryFetchBearerToken(request);
         if (foundAccessToken.isPresent()) {
-            ServiceInstance instance = discoveryClient.getInstances("auth-server").getFirst();
+            ServiceInstance instance = discoveryClient.getInstances("auth-service").getFirst();
             ResponseEntity<String> userEmail = restClient.get()
                     .uri(instance.getUri() + "/auth/with-token")
-                    .header("Access-Token", foundAccessToken.get())
+                    .header("X-Access-Token", foundAccessToken.get())
                     .retrieve()
                     .toEntity(String.class);
 

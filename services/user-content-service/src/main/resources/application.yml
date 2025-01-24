@@ -1,6 +1,19 @@
 server:
   port: ${APPLICATION_PORT}
 
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+  host: http://localhost:8080
+
+  servlet:
+    session:
+      cookie:
+        name: 'mlsession'
+        same-site: lax
+
 spring:
   application:
     name: 'user-content-service'
@@ -14,7 +27,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         dialect: 'ru.moonlightapp.backend.core.storage.dialect.CustomH2Dialect'
@@ -33,3 +46,7 @@ spring:
 
   web:
     locale: en_US
+
+grpc:
+  server:
+    port: 9092

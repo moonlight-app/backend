@@ -106,6 +106,39 @@ public final class JwtTokenService {
         throw new ApiException(HttpStatus.UNAUTHORIZED, "access_denied", "Invalid access token!");
     }
 
+    public String authorizeWithToken(String accessToken) throws ApiException {
+        if (accessToken != null && !accessToken.isEmpty()) {
+            try {
+                Jws<Claims> claimsJws = Jwts.parser().verifyWith(key()).build().parseSignedClaims(accessToken);
+                Claims payload = claimsJws.getPayload();
+
+                Instant expiration = payload.getExpiration().toInstant();
+                if (expiration.isBefore(Instant.now()))
+                    throw new ApiException(HttpStatus.FORBIDDEN, "token_is_expired", "Your access token is expired!");
+
+                String userEmail = payload.getSubject();
+                if (userEmail != null && !userEmail.isEmpty()) {
+                    TokenPair foundPair = tokenPairRepository.getByAccessTokenAndUserEmail(accessToken, userEmail);
+                    if (foundPair != null) {
+                        if (foundPair.isAccessTokenExpired()) {
+                            throw new ApiException(HttpStatus.FORBIDDEN, "token_is_expired", "Your access token is expired!");
+                        } else {
+                            return userEmail;
+                        }
+                    }
+                }
+            } catch (ApiException ex) {
+                throw ex;
+            } catch (ExpiredJwtException ex) {
+                throw new ApiException(HttpStatus.FORBIDDEN, "token_is_expired", "Your access token is expired!");
+            } catch (Exception ex) {
+                log.warn("Invalid JWT token: {} ({})", ex.getMessage(), ex.getClass().getName());
+            }
+        }
+
+        throw new ApiException(HttpStatus.UNAUTHORIZED, "access_denied", "Invalid access token!");
+    }
+
     public Optional<String> extractUserEmail(String accessToken) {
         try {
             Jws<Claims> claimsJws = Jwts.parser().verifyWith(key()).build().parseSignedClaims(accessToken);

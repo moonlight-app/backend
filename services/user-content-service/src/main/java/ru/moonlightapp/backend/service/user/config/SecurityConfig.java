@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,9 +27,9 @@ public class SecurityConfig {
     private final UserRepository userRepository;
 
     @Bean
-    @Order(1)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .addFilterBefore(foreignAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/user", "/api/user/password").authenticated()
                         .anyRequest().authenticated())
@@ -39,14 +38,6 @@ public class SecurityConfig {
                         .maximumSessions(1))
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN)))
-                .build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain addJwtAuthenticationMethod(HttpSecurity http) throws Exception {
-        return http
-                .addFilterBefore(foreignAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

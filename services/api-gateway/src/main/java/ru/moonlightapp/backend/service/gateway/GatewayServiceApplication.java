@@ -16,10 +16,10 @@ public class GatewayServiceApplication {
         return builder.routes()
                 .route(p -> p
                         .path("/auth/**")
-                        .uri("lb://auth-service"))
+                        .uri("http://127.0.0.1:8081"))
                 .route(p -> p
                         .path("/api/**")
-                        .uri("lb://user-content-service"))
+                        .uri("http://127.0.0.1:8082"))
                 .build();
     }
 
